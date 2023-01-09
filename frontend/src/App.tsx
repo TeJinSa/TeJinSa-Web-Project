@@ -1,6 +1,9 @@
 import React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './router/Router';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { worker } from './mocks/worker'; 
+
+if (process.env.NODE_ENV === 'development') worker.start();
 
 const queryClient = new QueryClient();
 
