@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.header`
-	height: 128px;
+	height: 156px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	padding: 0 30px;
 	background: url('https://tetr.io/res/about/about-header.png');
