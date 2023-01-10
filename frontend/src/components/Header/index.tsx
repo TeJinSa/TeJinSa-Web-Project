@@ -1,11 +1,10 @@
-import HeaderContainer from './HeaderContainer';
+import HeaderContainer from './header.container';
 
 const Header = () => {
 	return (
-		<HeaderContainer>
-			<div>a</div>
-			<div>a</div>
-		</HeaderContainer>
+		<div>
+			<HeaderContainer left={<>a</>} right={<>b</>} />
+		</div>
 	);
 };
 export default Header;
