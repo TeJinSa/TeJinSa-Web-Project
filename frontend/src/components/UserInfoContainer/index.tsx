@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { AiOutlineEdit } from 'react-icons/ai';
 
 const UserInfoWrapper = styled.aside`
   display: flex;
@@ -8,7 +9,7 @@ const UserInfoWrapper = styled.aside`
   border-radius: 30px;
 `;
 
-const UserProfileImage = styled.img`
+const ProfileImage = styled.img`
   width: 12rem;
   margin: 1rem auto;
   border-radius: 50%;
@@ -21,20 +22,20 @@ const UserInfoTitle = styled.h2`
   margin-bottom: 1rem;
 `;
 
-const UserProfileMessageWrapper = styled.div`
+const ProfileMessageWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 `;
 
-const UserProfileMessage = styled.p`
+const ProfileMessage = styled.p`
   width: 240px;
   margin: 0;
   border: none;
   word-break: keep-all;
 `;
 
-const UserProfileEditButton = styled.button`
+const ProfileMessageEditButton = styled.button`
   width: 2rem;
   height: 2rem;
   outline: none;
@@ -44,7 +45,7 @@ const UserProfileEditButton = styled.button`
   cursor: pointer;
 `;
 
-const HorizontalLine = styled.div`
+const DivideLine = styled.div`
   width: inherit;
   margin: 2rem 0;
   border: 1px solid lightgrey;
@@ -55,7 +56,7 @@ const UserInfoContent = styled.span`
   word-break: break-all;
 `;
 
-const HighlightRank = styled.span`
+const RankHighlight = styled.span`
   font-weight: 700;
 `;
 
@@ -105,25 +106,27 @@ const UserInfoContainer = () => {
 
   return (
     <UserInfoWrapper>
-      <UserProfileImage src="https://github.com/iyu88.png" alt="사용자 GitHub 프로필 사진" />
+      <ProfileImage src="https://github.com/iyu88.png" alt="사용자 GitHub 프로필 사진" />
       <UserInfoTitle>iyu88</UserInfoTitle>
-      <UserProfileMessageWrapper>
-        <UserProfileMessage>
+      <ProfileMessageWrapper>
+        <ProfileMessage>
           상태 메세지가 두 줄 넘으면 Wrap 되면 좋겠네요. 세 줄이 되면 어떻게 되는지 확인할게요.{' '}
-        </UserProfileMessage>
-        <UserProfileEditButton>ㅇ</UserProfileEditButton>
-      </UserProfileMessageWrapper>
-      <HorizontalLine />
+        </ProfileMessage>
+        <ProfileMessageEditButton>
+          <AiOutlineEdit size="20" color="white" />
+        </ProfileMessageEditButton>
+      </ProfileMessageWrapper>
+      <DivideLine />
       <UserInfoTitle>보유 코인 현황</UserInfoTitle>
       <UserInfoContent>{stringifyTotalCoin(tempCoin)}</UserInfoContent>
-      <HorizontalLine />
+      <DivideLine />
       <UserInfoTitle>최근 전적</UserInfoTitle>
       <UserInfoContent>
         {latestRecord.length ? (
           <ul>
             {latestRecord.map((r) => (
               <li key={r.round}>
-                {r.round}회차 ({r.rank === 1 ? <HighlightRank>{r.rank}</HighlightRank> : r.rank}/{r.participantsNum})
+                {r.round}회차 ({r.rank === 1 ? <RankHighlight>{r.rank}</RankHighlight> : r.rank}/{r.participantsNum})
               </li>
             ))}
           </ul>
