@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineEdit } from 'react-icons/ai';
+import { useQuery } from 'react-query';
 
 const UserInfoWrapper = styled.aside`
   display: flex;
@@ -80,31 +80,32 @@ interface UserProfile {
   latestRecord: MatchRecord[];
 }
 
+const fetchUserProfile = async (userId: string | null) => {
+  if (userId === null) {
+    throw new Error('올바른 사용자 아이디가 아닙니다.');
+  }
+  try {
+    const response = await fetch(`/api/users/profile?user=${userId}`);
+    const profileJSON = await response.json();
+    return profileJSON;
+  } catch (err) {
+    throw new Error('프로필 정보를 불러오는 데 오류가 발생했습니다.');
+  }
+};
+
 const UserInfoContainer = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile | undefined>(undefined);
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('id');
 
   const NO_COIN_MESSAGE = '테트리스를 할 수 없단다 😩';
   const NO_MATCH_MESSAGE = '참여 좀 하렴 😮‍💨';
 
+  const { data: userProfile } = useQuery<UserProfile>(['userProfile', userId], () => fetchUserProfile(userId));
+
   const stringifyTotalCoin = (coins: CoinStatus[]) => {
     const DUE_STATUS = ['🔴', '🟡', '🔵'];
     return coins.map((coin) => DUE_STATUS[coin.due].repeat(coin.count)).join('');
   };
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await fetch(`/api/users/profile?user=${userId}`);
-        const profileJSON = await response.json();
-        setUserProfile(profileJSON);
-      } catch (err) {
-        alert(err);
-      }
-    };
-    fetchUserProfile();
-  }, [userId]);
 
   return (
     <UserInfoWrapper>
