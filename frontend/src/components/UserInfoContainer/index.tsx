@@ -4,6 +4,7 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { useQuery } from 'react-query';
 
 const UserInfoWrapper = styled.aside`
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: 1rem;
