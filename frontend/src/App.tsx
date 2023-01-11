@@ -9,12 +9,12 @@ if (process.env.NODE_ENV === 'development') worker.start();
 const queryClient = new QueryClient();
 
 const App = () => {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<GlobalStyle />
-			<Router />
-		</QueryClientProvider>
-	);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
+      <Router />
+    </QueryClientProvider>
+  );
 };
 
 export default App;
