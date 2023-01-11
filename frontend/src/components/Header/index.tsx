@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Notice from './notice';
 import Login from './login';
+import HeaderImg from '../../assets/header.png';
 
 const HeaderContainer = styled.header`
   height: 156px;
@@ -9,7 +10,7 @@ const HeaderContainer = styled.header`
   justify-content: center;
   align-items: center;
   padding: 0 30px;
-  background: url('https://tetr.io/res/about/about-header.png');
+  background-image: url(${HeaderImg});
   background-repeat: no-repeat;
   background-size: cover;
 `;
