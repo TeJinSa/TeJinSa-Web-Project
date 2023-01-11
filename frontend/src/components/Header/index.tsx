@@ -1,8 +1,18 @@
 import styled from 'styled-components';
-import { AiFillGithub } from 'react-icons/ai';
-import { useState } from 'react';
-import HeaderContainer from './index.container';
-import { GITHUB_CLIENT_ID } from './constants';
+import Notice from './notice';
+import Login from './login';
+
+const HeaderContainer = styled.header`
+	height: 156px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 0 30px;
+	background: url('https://tetr.io/res/about/about-header.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+`;
 
 const Title = styled.div`
 	@import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300&display=swap');
@@ -10,42 +20,34 @@ const Title = styled.div`
 	font-size: 56px;
 	color: #ffb03a;
 `;
-const Logo = styled.div``;
-const GithubLoginButton = styled.button`
-	display: flex;
-	align-items: center;
-	gap: 8px;
 
-	padding: 12px 24px;
-	background: black;
+const HeaderBar = styled.div`
+	// 공지 bar 위치조정 어떻게?
+	position: relative;
+	top: 10px;
+	max-height: 50px;
+	width: 60%;
 	border-radius: 8px;
-	border: none;
 
-	color: #ffffff;
+	background: rgba(255, 255, 255, 0.4);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
-const User = () => {
-	const [isLogined, setIsLogined] = useState<boolean>(false);
-
-	return isLogined ? (
-		<button type="button" onClick={() => setIsLogined(false)}>
-			로그아웃
-		</button>
-	) : (
-		<a href={`https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`}>
-			<GithubLoginButton onClick={() => setIsLogined(true)}>
-				Github로 로그인하기
-				<AiFillGithub size={20} />
-			</GithubLoginButton>
-		</a>
-	);
-};
+const Logo = styled.div``;
 
 const Header = () => {
 	return (
 		<div>
 			<HeaderContainer>
 				<Title>TeJinSa</Title>
+				<HeaderBar>
+					<Notice message="추가예정" />
+					<Login />
+				</HeaderBar>
 			</HeaderContainer>
 		</div>
 	);
