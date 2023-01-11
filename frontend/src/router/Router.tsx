@@ -5,16 +5,16 @@ import Main from '../pages/Main';
 import UserHome from '../pages/UserHome';
 
 const Router = () => {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<BasicLayout />}>
-					<Route path="/" element={<Main />} />
-					<Route path="/user" element={<UserHome />} />
-				</Route>
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<BasicLayout />}>
+          <Route path="/" element={<Main />} />
+          <Route path="/user" element={<UserHome />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default Router;
