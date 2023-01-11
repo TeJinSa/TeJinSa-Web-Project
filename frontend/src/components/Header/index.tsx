@@ -4,12 +4,15 @@ import Login from './login';
 import HeaderImg from '../../assets/header.png';
 
 const HeaderContainer = styled.header`
-  height: 156px;
   display: flex;
+  gap: 0.5rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 30px;
+
+  height: 9.75rem;
+  padding: 0 2rem;
+
   background-image: url(${HeaderImg});
   background-repeat: no-repeat;
   background-size: cover;
@@ -17,20 +20,18 @@ const HeaderContainer = styled.header`
 
 const Title = styled.div`
   font-family: 'Gemunu Libre', sans-serif;
-  font-size: 56px;
+  font-size: 5rem;
   color: #ffb03a;
 `;
 
 const HeaderBar = styled.div`
   // 공지 bar 위치조정 어떻게?
-  position: relative;
-  top: 10px;
-  max-height: 50px;
+  max-height: 3.2rem;
   width: 60%;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 
   background: rgba(255, 255, 255, 0.4);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 
   display: flex;
   justify-content: space-between;

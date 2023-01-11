@@ -4,18 +4,18 @@ import styled from 'styled-components';
 import { GITHUB_CLIENT_ID } from './constants';
 
 const Container = styled.div`
-  padding: 0 12px;
+  padding: 0 0.75rem;
 `;
 
 const GithubLoginButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 
   background: black;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   border: none;
-  padding: 6px 12px;
+  padding: 0.5rem 0.75rem;
 
   color: #ffffff;
 `;
