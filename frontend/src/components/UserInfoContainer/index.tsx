@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineEdit } from 'react-icons/ai';
 
@@ -65,66 +67,63 @@ interface CoinStatus {
   count: number;
 }
 
-const tempCoin = [
-  {
-    due: 0,
-    count: 5,
-  },
-  {
-    due: 1,
-    count: 13,
-  },
-  {
-    due: 2,
-    count: 9,
-  },
-];
+interface MatchRecord {
+  round: number;
+  rank: number;
+  participantsNum: number;
+}
 
-const latestRecord = [
-  {
-    round: 1,
-    rank: 2,
-    participantsNum: 5,
-  },
-  {
-    round: 2,
-    rank: 1,
-    participantsNum: 7,
-  },
-  {
-    round: 3,
-    rank: 2,
-    participantsNum: 2,
-  },
-];
+interface UserProfile {
+  userId: string;
+  statusMessage: string;
+  coins: CoinStatus[];
+  latestRecord: MatchRecord[];
+}
 
 const UserInfoContainer = () => {
+  const [userProfile, setUserProfile] = useState<UserProfile | undefined>(undefined);
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get('id');
+
   const stringifyTotalCoin = (coins: CoinStatus[]) => {
     const dueStatus = ['🔴', '🟡', '🔵'];
     return coins.map((coin) => dueStatus[coin.due].repeat(coin.count)).join('');
   };
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(`/api/users/profile?user=${userId}`);
+        const profileJSON = await response.json();
+        setUserProfile(profileJSON);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUserProfile();
+  }, [userId]);
+
   return (
     <UserInfoWrapper>
-      <ProfileImage src="https://github.com/iyu88.png" alt="사용자 GitHub 프로필 사진" />
-      <UserInfoTitle>iyu88</UserInfoTitle>
+      <ProfileImage src={`https://github.com/${userProfile?.userId}.png`} alt="사용자 GitHub 프로필 사진" />
+      <UserInfoTitle>{userProfile?.userId}</UserInfoTitle>
       <ProfileMessageWrapper>
-        <ProfileMessage>
-          상태 메세지가 두 줄 넘으면 Wrap 되면 좋겠네요. 세 줄이 되면 어떻게 되는지 확인할게요.{' '}
-        </ProfileMessage>
+        <ProfileMessage>{userProfile?.statusMessage}</ProfileMessage>
         <ProfileMessageEditButton>
           <AiOutlineEdit size="20" color="white" />
         </ProfileMessageEditButton>
       </ProfileMessageWrapper>
       <DivideLine />
       <UserInfoTitle>보유 코인 현황</UserInfoTitle>
-      <UserInfoContent>{stringifyTotalCoin(tempCoin)}</UserInfoContent>
+      <UserInfoContent>
+        {userProfile?.coins.length ? stringifyTotalCoin(userProfile?.coins) : <p>테트리스를 할 수 없단다 😩</p>}
+      </UserInfoContent>
       <DivideLine />
       <UserInfoTitle>최근 전적</UserInfoTitle>
       <UserInfoContent>
-        {latestRecord.length ? (
+        {userProfile?.latestRecord.length ? (
           <ul>
-            {latestRecord.map((r) => (
+            {userProfile?.latestRecord.map((r) => (
               <li key={r.round}>
                 {r.round}회차 ({r.rank === 1 ? <RankHighlight>{r.rank}</RankHighlight> : r.rank}/{r.participantsNum})
               </li>
