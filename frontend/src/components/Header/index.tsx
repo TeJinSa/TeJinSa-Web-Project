@@ -37,19 +37,15 @@ const HeaderBar = styled.div`
   align-items: center;
 `;
 
-const Logo = styled.div``;
-
 const Header = () => {
   return (
-    <div>
-      <HeaderContainer>
-        <Title>TeJinSa</Title>
-        <HeaderBar>
-          <Notice message="추가예정" />
-          <Login />
-        </HeaderBar>
-      </HeaderContainer>
-    </div>
+    <HeaderContainer>
+      <Title>TeJinSa</Title>
+      <HeaderBar>
+        <Notice message="추가예정" />
+        <Login />
+      </HeaderBar>
+    </HeaderContainer>
   );
 };
 export default Header;
