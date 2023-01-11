@@ -24,20 +24,20 @@ const UserInfoTitle = styled.h2`
   margin-bottom: 1rem;
 `;
 
-const ProfileMessageWrapper = styled.div`
+const StatusMessageWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 `;
 
-const ProfileMessage = styled.p`
+const StatusMessage = styled.p`
   width: 240px;
   margin: 0;
   border: none;
   word-break: keep-all;
 `;
 
-const ProfileMessageEditButton = styled.button`
+const StatusMessageEditButton = styled.button`
   width: 2rem;
   height: 2rem;
   outline: none;
@@ -85,9 +85,12 @@ const UserInfoContainer = () => {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('id');
 
+  const NO_COIN_MESSAGE = '테트리스를 할 수 없단다 😩';
+  const NO_MATCH_MESSAGE = '참여 좀 하렴 😮‍💨';
+
   const stringifyTotalCoin = (coins: CoinStatus[]) => {
-    const dueStatus = ['🔴', '🟡', '🔵'];
-    return coins.map((coin) => dueStatus[coin.due].repeat(coin.count)).join('');
+    const DUE_STATUS = ['🔴', '🟡', '🔵'];
+    return coins.map((coin) => DUE_STATUS[coin.due].repeat(coin.count)).join('');
   };
 
   useEffect(() => {
@@ -97,7 +100,7 @@ const UserInfoContainer = () => {
         const profileJSON = await response.json();
         setUserProfile(profileJSON);
       } catch (err) {
-        console.log(err);
+        alert(err);
       }
     };
     fetchUserProfile();
@@ -107,16 +110,16 @@ const UserInfoContainer = () => {
     <UserInfoWrapper>
       <ProfileImage src={`https://github.com/${userProfile?.userId}.png`} alt="사용자 GitHub 프로필 사진" />
       <UserInfoTitle>{userProfile?.userId}</UserInfoTitle>
-      <ProfileMessageWrapper>
-        <ProfileMessage>{userProfile?.statusMessage}</ProfileMessage>
-        <ProfileMessageEditButton>
+      <StatusMessageWrapper>
+        <StatusMessage>{userProfile?.statusMessage}</StatusMessage>
+        <StatusMessageEditButton>
           <AiOutlineEdit size="20" color="white" />
-        </ProfileMessageEditButton>
-      </ProfileMessageWrapper>
+        </StatusMessageEditButton>
+      </StatusMessageWrapper>
       <DivideLine />
       <UserInfoTitle>보유 코인 현황</UserInfoTitle>
       <UserInfoContent>
-        {userProfile?.coins.length ? stringifyTotalCoin(userProfile?.coins) : <p>테트리스를 할 수 없단다 😩</p>}
+        {userProfile?.coins.length ? stringifyTotalCoin(userProfile?.coins) : <p>{NO_COIN_MESSAGE}</p>}
       </UserInfoContent>
       <DivideLine />
       <UserInfoTitle>최근 전적</UserInfoTitle>
@@ -130,7 +133,7 @@ const UserInfoContainer = () => {
             ))}
           </ul>
         ) : (
-          <p>참여 좀 하렴 😮‍💨</p>
+          <p>{NO_MATCH_MESSAGE}</p>
         )}
       </UserInfoContent>
     </UserInfoWrapper>
