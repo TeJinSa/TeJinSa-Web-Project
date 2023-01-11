@@ -6,6 +6,8 @@ const GlobalStyle = createGlobalStyle`
         padding:0;
         font-size:16px;
     }
+
+    
 `;
 
 export default GlobalStyle;

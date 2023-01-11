@@ -15,8 +15,7 @@ const HeaderContainer = styled.header`
 `;
 
 const Title = styled.div`
-	@import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300&display=swap');
-	font-family: 'Kiwi Maru', serif;
+	font-family: 'Gemunu Libre', sans-serif;
 	font-size: 56px;
 	color: #ffb03a;
 `;
