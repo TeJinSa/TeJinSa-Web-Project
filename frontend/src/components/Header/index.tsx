@@ -25,8 +25,7 @@ const Title = styled.div`
 `;
 
 const HeaderBar = styled.div`
-  // 공지 bar 위치조정 어떻게?
-  max-height: 3.2rem;
+  height: 3rem;
   width: 60%;
   border-radius: 0.5rem;
 

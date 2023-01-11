@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AiFillGithub } from 'react-icons/ai';
+import { useMutation } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { postLogin } from '../../api/login';
@@ -54,16 +55,21 @@ const Login = () => {
   const [searchParams] = useSearchParams();
   const [isLogined, setIsLogined] = useState<boolean>(false);
   const [userData, setUserData] = useState<User>();
+  const { data, isLoading, mutate } = useMutation(postLogin, {
+    onSuccess: (d) => {
+      setUserData(d);
+      setIsLogined(true);
+    },
+  });
 
   useEffect(() => {
     const getUserData = async () => {
       if (searchParams.has('code')) {
-        const data = await postLogin({ code: searchParams.get('code') });
-        setUserData(data);
-        setIsLogined(true);
+        mutate({ code: searchParams.get('code') });
       }
     };
     getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleGithubLogin = () => {
