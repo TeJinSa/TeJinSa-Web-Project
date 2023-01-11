@@ -21,8 +21,14 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }], //should add ".ts" if typescript project
+    "react/jsx-filename-extension": [1, { "extensions": ["ts", "tsx"] }], //should add ".ts" if typescript project
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "react/function-component-definition":[2, { "namedComponents" : "arrow-function" }]
+    "react/function-component-definition": [2, { "namedComponents": "arrow-function" }],
+    "prettier/prettier": [
+      "error",
+      {
+        "useTabs": false
+      }
+    ]
   }
 }
