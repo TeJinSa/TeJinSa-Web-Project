@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { db } from '../ormconfig';
 import userRouter from './routes/user';
+import session from 'express-session';
 
 dotenv.config();
 
@@ -21,6 +22,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(morgan('dev'));
+
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET || 'secret',
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			maxAge: 1000 * 60 * 60 * 6, // 6 hours
+		},
+	})
+);
 
 app.use('/api/users', userRouter);
 

@@ -13,6 +13,7 @@ class UserModel {
 	public async createUser(userData: loginData) {
 		const res = this.userEntity.create(userData);
 		await this.userEntity.save(res);
+		return res;
 	}
 }
 

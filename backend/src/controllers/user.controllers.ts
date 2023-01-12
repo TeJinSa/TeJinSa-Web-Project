@@ -15,7 +15,13 @@ class UserController {
 				throw new Error('code가 잘못되었습니다.');
 			}
 
-			await this.userService.createUser(userData);
+			const user = await this.userService.createUser(userData);
+
+			const session: any = req.session;
+			session.userGithubId = user.userId;
+			session.userId = user.id;
+
+			res.status(200).json(user);
 		} catch (err) {
 			next(err);
 		}

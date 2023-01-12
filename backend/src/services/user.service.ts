@@ -49,8 +49,10 @@ class UserService {
 		const res = await this.userModel.findUser(userData.userId);
 
 		if (res === null) {
-			await this.userModel.createUser(userData);
+			return await this.userModel.createUser(userData);
 		}
+
+		return res;
 	}
 }
 
