@@ -22,7 +22,12 @@ class UserController {
 			session.userGithubId = user.userId;
 			session.userId = user.id;
 
-			res.status(200).json(user);
+			res.status(200).json({
+				isSuccess: true,
+				code: 200,
+				message: '성공',
+				user,
+			});
 		} catch (err) {
 			next(err);
 		}
