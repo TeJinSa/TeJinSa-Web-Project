@@ -38,7 +38,11 @@ app.use('/api/users', userRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 	res.status(err.status || 500);
-	res.json({ message: err.message });
+	res.json({
+		isSuccess: false,
+		code: err.status,
+		message: err.message,
+	});
 });
 
 app.listen(PORT, () => {
