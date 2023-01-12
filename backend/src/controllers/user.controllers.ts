@@ -14,6 +14,8 @@ class UserController {
 			if (userData === undefined) {
 				throw new Error('code가 잘못되었습니다.');
 			}
+
+			await this.userService.createUser(userData);
 		} catch (err) {
 			next(err);
 		}

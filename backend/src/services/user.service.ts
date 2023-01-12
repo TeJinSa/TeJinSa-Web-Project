@@ -1,11 +1,14 @@
 import axios from 'axios';
+import UserModel from '../models/user.model';
 
-type loginData = {
+export type loginData = {
 	userId: string;
 	image: string;
 };
 
 class UserService {
+	userModel = new UserModel();
+
 	public async getGithubAccess(code: string) {
 		try {
 			const result = await axios.post(
@@ -42,7 +45,13 @@ class UserService {
 		}
 	}
 
-	public async createUser(userData: loginData) {}
+	public async createUser(userData: loginData) {
+		const res = await this.userModel.findUser(userData.userId);
+
+		if (res === null) {
+			await this.userModel.createUser(userData);
+		}
+	}
 }
 
 export default UserService;
