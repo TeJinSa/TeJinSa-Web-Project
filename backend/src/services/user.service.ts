@@ -4,7 +4,6 @@ import UserModel from '../models/user.model';
 
 export type loginData = {
   userId: string;
-  image: string;
 };
 
 class UserService {
@@ -45,18 +44,18 @@ class UserService {
         },
       });
 
-      return { userId: result.data.login, image: result.data.avatar_url };
+      return { userId: result.data.login };
     } catch (err) {
       throw err;
     }
   }
 
-  public async createUser(userData: loginData) {
+  public async createUser(userId: string) {
     try {
-      const res = await this.userModel.findUser(userData.userId);
+      const res = await this.userModel.findUser(userId);
 
       if (res === null) {
-        return await this.userModel.createUser(userData);
+        return await this.userModel.createUser(userId);
       }
 
       return res;

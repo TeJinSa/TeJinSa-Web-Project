@@ -7,7 +7,4 @@ export class User {
 
   @Column({ length: 20, unique: true })
   userId: string;
-
-  @Column()
-  image: string;
 }

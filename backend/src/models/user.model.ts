@@ -1,6 +1,5 @@
 import { db } from '../../ormconfig';
 import { User } from '../entities/user.entity';
-import { loginData } from '../services/user.service';
 
 class UserModel {
   userEntity = db.getRepository(User);
@@ -10,8 +9,8 @@ class UserModel {
     return res;
   }
 
-  public async createUser(userData: loginData) {
-    const res = this.userEntity.create(userData);
+  public async createUser(userId: string) {
+    const res = this.userEntity.create({ userId });
     await this.userEntity.save(res);
     return res;
   }

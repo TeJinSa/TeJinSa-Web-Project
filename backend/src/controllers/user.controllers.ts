@@ -16,7 +16,7 @@ class UserController {
         throw new BadRequestException('accessToken이 잘못되었습니다.');
       }
 
-      const user = await this.userService.createUser(userData);
+      const user = await this.userService.createUser(userData.userId);
 
       const session: any = req.session;
       session.userGithubId = user.userId;
