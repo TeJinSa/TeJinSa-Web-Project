@@ -32,6 +32,16 @@ class UserController {
       next(err);
     }
   }
+
+  public logoutUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      req.session.destroy((err) => {
+        throw new Error(err);
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default UserController;
