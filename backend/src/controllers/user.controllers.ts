@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { BadRequestException } from '../error/httpException';
 import UserService from '../services/user.service';
 
 class UserController {
@@ -12,7 +13,7 @@ class UserController {
 			const userData = await this.userService.getGithubUserInfo(accessToken);
 
 			if (userData === undefined) {
-				throw new Error('code가 잘못되었습니다.');
+				throw new BadRequestException('accessToken이 잘못되었습니다.');
 			}
 
 			const user = await this.userService.createUser(userData);

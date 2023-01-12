@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { db } from '../ormconfig';
@@ -35,6 +35,11 @@ app.use(
 );
 
 app.use('/api/users', userRouter);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+	res.status(err.status || 500);
+	res.json({ message: err.message });
+});
 
 app.listen(PORT, () => {
 	console.log(`Server listening on port: ${PORT}`);

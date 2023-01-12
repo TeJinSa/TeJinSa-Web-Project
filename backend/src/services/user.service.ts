@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BadRequestException } from '../error/httpException';
 import UserModel from '../models/user.model';
 
 export type loginData = {
@@ -24,9 +25,14 @@ class UserService {
 					},
 				}
 			);
+
+			if (result.data.access_token === undefined) {
+				throw new BadRequestException('code가 잘못되었습니다.');
+			}
+
 			return result.data.access_token;
 		} catch (err) {
-			console.error(err);
+			throw err;
 		}
 	}
 
@@ -41,18 +47,22 @@ class UserService {
 
 			return { userId: result.data.login, image: result.data.avatar_url };
 		} catch (err) {
-			console.error(err);
+			throw err;
 		}
 	}
 
 	public async createUser(userData: loginData) {
-		const res = await this.userModel.findUser(userData.userId);
+		try {
+			const res = await this.userModel.findUser(userData.userId);
 
-		if (res === null) {
-			return await this.userModel.createUser(userData);
+			if (res === null) {
+				return await this.userModel.createUser(userData);
+			}
+
+			return res;
+		} catch (err) {
+			throw err;
 		}
-
-		return res;
 	}
 }
 
