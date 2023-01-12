@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import { useMutation } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -49,8 +49,8 @@ const LogoutButton = styled.button`
 const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const githubCode = searchParams.get('code');
-  const [isLogined, setIsLogined] = useState<boolean>(false);
-  const { data: userData, mutate } = useMutation(postLogin);
+  const isLogined = localStorage.getItem('isLogined') === 'true';
+  const { mutate } = useMutation(postLogin);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -58,8 +58,10 @@ const Login = () => {
         mutate(
           { code: githubCode },
           {
-            onSuccess: () => {
-              setIsLogined(true);
+            onSuccess: (d) => {
+              localStorage.setItem('isLogined', 'true');
+              localStorage.setItem('id', d.userId);
+
               searchParams.delete('code');
               setSearchParams(searchParams);
             },
@@ -75,24 +77,30 @@ const Login = () => {
 
   const handleGithubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`;
-    setIsLogined(true);
+    localStorage.setItem('isLogined', 'false');
   };
 
   const handleLogout = async () => {
     const data = await postLogout();
     if (data.isSuccess) {
       alert('로그아웃 되었습니다.');
+      localStorage.removeItem('id');
+      localStorage.setItem('isLogined', 'false');
       window.location.href = '/';
     }
   };
+
+  const getUserId = useCallback(() => {
+    return localStorage.getItem('id');
+  }, []);
 
   return (
     <Container>
       {isLogined ? (
         <LoginedContainer>
           <UserContainer>
-            <Profile src={userData.userProfile} alt="profile" />
-            <p>{userData.userId}</p>
+            <Profile src={`https://github.com/${getUserId()}.png`} alt="profile" />
+            <p>{getUserId()}</p>
           </UserContainer>
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
         </LoginedContainer>
