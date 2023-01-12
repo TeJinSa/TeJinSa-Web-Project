@@ -7,7 +7,9 @@ const GlobalStyle = createGlobalStyle`
         font-size:16px;
     }
 
-    
+    body { 
+        background-color: #F3F3F3;
+    }
 `;
 
 export default GlobalStyle;
