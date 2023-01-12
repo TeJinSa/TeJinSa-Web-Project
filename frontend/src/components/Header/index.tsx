@@ -27,6 +27,7 @@ const Title = styled.div`
 const HeaderBar = styled.div`
   height: 3rem;
   width: 60%;
+
   border-radius: 0.5rem;
 
   background: rgba(255, 255, 255, 0.4);

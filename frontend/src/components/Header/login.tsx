@@ -3,7 +3,7 @@ import { AiFillGithub } from 'react-icons/ai';
 import { useMutation } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { postLogin } from '../../api/login';
+import { postLogin, postLogout } from '../../api/login';
 import { GITHUB_CLIENT_ID } from './constants';
 
 const Container = styled.div`
@@ -46,35 +46,45 @@ const LogoutButton = styled.button`
   }
 `;
 
-interface User {
-  userId: string;
-  userProfile: string;
-}
-
 const Login = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const githubCode = searchParams.get('code');
   const [isLogined, setIsLogined] = useState<boolean>(false);
-  const [userData, setUserData] = useState<User>();
-  const { data, isLoading, mutate } = useMutation(postLogin, {
-    onSuccess: (d) => {
-      setUserData(d);
-      setIsLogined(true);
-    },
-  });
+  const { data: userData, mutate } = useMutation(postLogin);
 
   useEffect(() => {
     const getUserData = async () => {
-      if (searchParams.has('code')) {
-        mutate({ code: searchParams.get('code') });
+      if (githubCode !== null) {
+        mutate(
+          { code: githubCode },
+          {
+            onSuccess: () => {
+              setIsLogined(true);
+              searchParams.delete('code');
+              setSearchParams(searchParams);
+            },
+          }
+        );
       }
     };
     getUserData();
+
+    // useEffect의 누락된 속성을 알려주는 규칙인데 mount시의 useEffect사용이 막히더라구요.. 이 규칙은 뺄까요?
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, []);
 
   const handleGithubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`;
     setIsLogined(true);
+  };
+
+  const handleLogout = async () => {
+    const data = await postLogout();
+    if (data.isSuccess) {
+      alert('로그아웃 되었습니다.');
+      window.location.href = '/';
+      setIsLogined(false);
+    }
   };
 
   return (
@@ -82,10 +92,10 @@ const Login = () => {
       {isLogined ? (
         <LoginedContainer>
           <UserContainer>
-            <Profile src={userData?.userProfile} alt="profile" />
-            <p>{userData?.userId}</p>
+            <Profile src={userData.userProfile} alt="profile" />
+            <p>{userData.userId}</p>
           </UserContainer>
-          <LogoutButton onClick={() => setIsLogined(false)}>로그아웃</LogoutButton>
+          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
         </LoginedContainer>
       ) : (
         <GithubLoginButton onClick={handleGithubLogin}>

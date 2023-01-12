@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants/url';
 
-// eslint-disable-next-line import/prefer-default-export
-export const postLogin = async ({ code }: { code: string | null }) => {
+export const postLogin = async ({ code }: { code: string }) => {
   const { data } = await axios.post(`${BASE_URL}/login`, { code });
+  console.log(data);
+  return data;
+};
+
+export const postLogout = async () => {
+  const { data } = await axios.post(`${BASE_URL}/logout`);
   return data;
 };
