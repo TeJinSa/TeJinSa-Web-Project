@@ -32,6 +32,22 @@ class UserController {
       next(err);
     }
   }
+
+  public logoutUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      req.session.destroy((err) => {
+        throw new Error(err);
+      });
+
+      res.status(200).json({
+        isSuccess: true,
+        code: 200,
+        message: '성공',
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default UserController;

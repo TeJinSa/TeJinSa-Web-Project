@@ -6,9 +6,7 @@ const usersController = new UserController();
 
 router.post('/login', usersController.createUser.bind(usersController));
 
-router.post('/logout', (req, res) => {
-  console.log('logout');
-});
+router.post('/logout', usersController.logoutUser.bind(usersController));
 
 router.get('/login-status', (req, res) => {
   console.log('login-status');
