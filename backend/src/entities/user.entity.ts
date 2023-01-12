@@ -6,7 +6,7 @@ export class User {
 	id: number;
 
 	@Column({ length: 20, unique: true })
-	githubId: string;
+	userId: string;
 
 	@Column()
 	image: string;
