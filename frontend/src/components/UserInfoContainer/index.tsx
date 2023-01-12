@@ -83,7 +83,7 @@ interface UserProfile {
 
 const fetchUserProfile = async (userId: string | null) => {
   if (userId === null) {
-    throw new Error('올바른 사용자 아이디가 아닙니다.');
+    throw new Error('아이디를 입력해주세요.');
   }
   try {
     const response = await fetch(`/api/users/profile?user=${userId}`);
