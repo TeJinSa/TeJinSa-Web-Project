@@ -38,6 +38,12 @@ class UserController {
       req.session.destroy((err) => {
         throw new Error(err);
       });
+
+      res.status(200).json({
+        isSuccess: true,
+        code: 200,
+        message: '성공',
+      });
     } catch (err) {
       next(err);
     }
