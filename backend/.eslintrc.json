@@ -17,5 +17,12 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "rules": {}
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+      "useTabs": false
+      }
+    ]
+  }
 }
