@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { useQuery } from 'react-query';
+import { QueryFunctionContext, useQuery } from 'react-query';
 
 const UserInfoWrapper = styled.aside`
   flex: 1;
@@ -81,7 +81,8 @@ interface UserProfile {
   latestRecord: MatchRecord[];
 }
 
-const fetchUserProfile = async (userId: string | null) => {
+const fetchUserProfile = async ({ queryKey }: QueryFunctionContext) => {
+  const userId = queryKey[1];
   if (userId === null) {
     throw new Error('아이디를 입력해주세요.');
   }
@@ -101,7 +102,7 @@ const UserInfoContainer = () => {
   const NO_COIN_MESSAGE = '테트리스를 할 수 없단다 😩';
   const NO_MATCH_MESSAGE = '참여 좀 하렴 😮‍💨';
 
-  const { data: userProfile } = useQuery<UserProfile>(['userProfile', userId], () => fetchUserProfile(userId));
+  const { data: userProfile } = useQuery<UserProfile>(['userProfile', userId], fetchUserProfile);
 
   const stringifyTotalCoin = (coins: CoinStatus[]) => {
     const DUE_STATUS = ['🔴', '🟡', '🔵'];
