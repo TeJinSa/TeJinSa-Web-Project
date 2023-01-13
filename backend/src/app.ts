@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { db } from '../ormconfig';
 import userRouter from './routes/user';
+import problemRouter from './routes/problem';
 import session from 'express-session';
 import { runSeeders } from 'typeorm-extension';
 import { PlatformLevel } from './entities/platformLevel.entity';
@@ -46,6 +47,7 @@ app.use(
 );
 
 app.use('/api/users', userRouter);
+app.use('/api/problems', problemRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500);
