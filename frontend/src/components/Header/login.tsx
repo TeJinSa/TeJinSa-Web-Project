@@ -2,49 +2,8 @@ import { useCallback, useEffect } from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import { useMutation } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { postLogin, postLogout } from '../../api/login';
 import { GITHUB_CLIENT_ID } from './constants';
-
-const Container = styled.div`
-  padding: 0 0.75rem;
-`;
-
-const GithubLoginButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  background: black;
-  border-radius: 0.5rem;
-  border: none;
-  padding: 0.5rem 0.75rem;
-
-  color: #ffffff;
-`;
-
-const LoginedContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-const UserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-const Profile = styled.img`
-  width: 2rem;
-  border-radius: 50%;
-`;
-
-const LogoutButton = styled.button`
-  background: none;
-  border: none;
-  :hover {
-    font-weight: 700;
-  }
-`;
 
 const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,22 +54,28 @@ const Login = () => {
   }, []);
 
   return (
-    <Container>
+    <div className="py-0 px-3">
       {isLogined ? (
-        <LoginedContainer>
-          <UserContainer>
-            <Profile src={`https://github.com/${getUserId()}.png`} alt="profile" />
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <img className="w-8 rounded-full" src={`https://github.com/${getUserId()}.png`} alt="profile" />
             <p>{getUserId()}</p>
-          </UserContainer>
-          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-        </LoginedContainer>
+          </div>
+          <button type="button" className="border-none bg-none hover:underline" onClick={handleLogout}>
+            로그아웃
+          </button>
+        </div>
       ) : (
-        <GithubLoginButton onClick={handleGithubLogin}>
+        <button
+          type="button"
+          className="flex items-center gap-2 rounded-lg border-none bg-black py-2 px-3 text-white"
+          onClick={handleGithubLogin}
+        >
           Github로 로그인하기
           <AiFillGithub size={20} />
-        </GithubLoginButton>
+        </button>
       )}
-    </Container>
+    </div>
   );
 };
 

@@ -2,7 +2,17 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'header-img': "url('./assets/header.png')",
+      },
+      fontFamily: {
+        title: ['Gemunu Libre', 'sans-serif'],
+      },
+      textColor: {
+        title: '#ffb03a',
+      },
+    },
   },
   plugins: [],
 };
