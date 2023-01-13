@@ -16,8 +16,9 @@ export class Problem {
   @ManyToOne(() => User, (user) => user.id)
   user: User;
 
-  @ManyToOne(() => PlatformLevel, (platformLevel) => platformLevel.id)
-  platformLevel: PlatformLevel;
+  // @ManyToOne(() => PlatformLevel, (platformLevel) => platformLevel.id)
+  @Column()
+  platformLevelId: number;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

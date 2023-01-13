@@ -4,7 +4,7 @@ import { Problem } from './problem.entity';
 @Entity()
 export class PlatformLevel {
   @PrimaryGeneratedColumn()
-  @OneToMany(() => Problem, (problem) => problem.platformLevel)
+  // @OneToMany(() => Problem, (problem) => problem.platformLevel)
   id: number;
 
   @Column()
