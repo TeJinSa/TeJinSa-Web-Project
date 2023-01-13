@@ -19,7 +19,7 @@ const Notice = ({ message }: Props) => {
   return (
     <Container>
       <Title>📣 공지사항</Title>
-      <Message>{message}</Message>
+      <div className="text-[16px]">{message}</div>
     </Container>
   );
 };
