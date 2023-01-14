@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import UserInfoContainer from '../components/UserInfoContainer';
-import UserCommonContainer from '../components/UserCommonContainer';
+import ProblemList from '../components/ProblemList';
 
 const UserHomeWrapper = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ const UserHome = () => {
     <UserHomeWrapper>
       <UserInfoContainer />
       <UserHistoryWrapper>
-        <UserCommonContainer />
+        <ProblemList />
       </UserHistoryWrapper>
     </UserHomeWrapper>
   );
