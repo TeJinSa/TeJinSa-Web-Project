@@ -12,6 +12,9 @@ module.exports = {
       textColor: {
         title: '#ffb03a',
       },
+      backgroundColor: {
+        overlay: 'rgba(0,0,0,0.4)',
+      },
     },
   },
   plugins: [],
