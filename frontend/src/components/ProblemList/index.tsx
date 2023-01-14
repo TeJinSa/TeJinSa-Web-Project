@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import UserCommonContainer from '../UserCommonContainer';
+import ProblemListItem from '../ProblemListItem';
 
 const ProblemListWrapper = styled.table`
   width: 100%;
@@ -45,6 +46,7 @@ const ProblemAttribute = styled.th`
 `;
 
 interface SolvedProblem {
+  id: string;
   platform: string;
   level: string;
   link: string;
@@ -89,7 +91,24 @@ const ProblemList = () => {
             <ProblemAttribute>{null}</ProblemAttribute>
           </tr>
         </ProblemListHeader>
-        <tbody />
+        <tbody>
+          {solvedProblem?.length ? (
+            solvedProblem.map((p) => (
+              <ProblemListItem
+                key={p.id}
+                platform={p.platform}
+                level={p.level}
+                link={p.link}
+                image={p.image}
+                date={p.date}
+              />
+            ))
+          ) : (
+            <tr>
+              <td>푼 문제가 없습니다.</td>
+            </tr>
+          )}
+        </tbody>
       </ProblemListWrapper>
     </UserCommonContainer>
   );
