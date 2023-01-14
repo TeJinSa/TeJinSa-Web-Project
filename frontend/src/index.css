@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer components {
+    /* flex을 이용한 중앙 정렬 style */
     .flex-center {
         @apply flex justify-center items-center;
     }
