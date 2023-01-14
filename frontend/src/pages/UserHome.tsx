@@ -1,20 +1,26 @@
 import styled from 'styled-components';
 import UserInfoContainer from '../components/UserInfoContainer';
+import UserCommonContainer from '../components/UserCommonContainer';
 
 const UserHomeWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 1.375rem;
 `;
 
-const UserCommonContainer = styled.div`
+const UserHistoryWrapper = styled.div`
   flex: 3;
+  display: flex;
+  flex-direction: column;
 `;
 
 const UserHome = () => {
   return (
     <UserHomeWrapper>
       <UserInfoContainer />
-      <UserCommonContainer />
+      <UserHistoryWrapper>
+        <UserCommonContainer />
+      </UserHistoryWrapper>
     </UserHomeWrapper>
   );
 };
