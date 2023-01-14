@@ -1,3 +1,5 @@
+import { QueryFunctionContext, useQuery } from 'react-query';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import UserCommonContainer from '../UserCommonContainer';
@@ -42,7 +44,32 @@ const ProblemAttribute = styled.th`
   text-align: center;
 `;
 
+interface SolvedProblem {
+  platform: string;
+  level: string;
+  link: string;
+  image: string;
+  date: string;
+  userId: string;
+}
+
+const fetchSolvedProblemList = async ({ queryKey }: QueryFunctionContext) => {
+  const userId = queryKey[1];
+  try {
+    const response = await fetch(`/api/problems${userId && `?user=${userId}`}`);
+    const solvedProblemListJSON = await response.json();
+    return solvedProblemListJSON;
+  } catch (err) {
+    throw new Error('푼 문제 정보를 불러오는 데 오류가 발생했습니다.');
+  }
+};
+
 const ProblemList = () => {
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get('id');
+
+  const { data: solvedProblem } = useQuery<SolvedProblem[]>(['solvedProblem', userId], fetchSolvedProblemList);
+
   return (
     <UserCommonContainer>
       <ProblemListTitle>
@@ -53,12 +80,14 @@ const ProblemList = () => {
       </ProblemListTitle>
       <ProblemListWrapper cellSpacing="0">
         <ProblemListHeader>
-          <ProblemAttribute>플랫폼</ProblemAttribute>
-          <ProblemAttribute>난이도</ProblemAttribute>
-          <ProblemAttribute>문제 링크</ProblemAttribute>
-          <ProblemAttribute>증빙</ProblemAttribute>
-          <ProblemAttribute>날짜</ProblemAttribute>
-          <ProblemAttribute>{null}</ProblemAttribute>
+          <tr>
+            <ProblemAttribute>플랫폼</ProblemAttribute>
+            <ProblemAttribute>난이도</ProblemAttribute>
+            <ProblemAttribute>문제 링크</ProblemAttribute>
+            <ProblemAttribute>증빙</ProblemAttribute>
+            <ProblemAttribute>날짜</ProblemAttribute>
+            <ProblemAttribute>{null}</ProblemAttribute>
+          </tr>
         </ProblemListHeader>
         <tbody />
       </ProblemListWrapper>
@@ -66,4 +95,5 @@ const ProblemList = () => {
   );
 };
 
+//
 export default ProblemList;
