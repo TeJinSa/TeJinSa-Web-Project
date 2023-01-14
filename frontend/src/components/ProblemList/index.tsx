@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import UserCommonContainer from '../UserCommonContainer';
 import ProblemListItem from '../ProblemListItem';
+import SolvedProblem from '../../types/solvedProblem';
 
 const ProblemListWrapper = styled.table`
   width: 100%;
@@ -44,16 +45,6 @@ const ProblemAttribute = styled.th`
   padding: 0.75rem 0;
   text-align: center;
 `;
-
-interface SolvedProblem {
-  id: string;
-  platform: string;
-  level: string;
-  link: string;
-  image: string;
-  date: string;
-  userId: string;
-}
 
 const fetchSolvedProblemList = async ({ queryKey }: QueryFunctionContext) => {
   const userId = queryKey[1];

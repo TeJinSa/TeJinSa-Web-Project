@@ -1,10 +1,4 @@
-interface SolvedProblem {
-  platform: string;
-  level: string;
-  link: string;
-  image: string;
-  date: string;
-}
+import SolvedProblem from '../../types/solvedProblem';
 
 const ProblemListItem = ({ platform, level, link, image, date }: SolvedProblem) => {
   return (
