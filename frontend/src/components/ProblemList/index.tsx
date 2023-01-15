@@ -41,9 +41,15 @@ const ProblemListHeader = styled.thead`
   }
 `;
 
-const ProblemAttribute = styled.th`
+const ProblemTableHeader = styled.th`
   padding: 0.75rem 0;
   text-align: center;
+`;
+
+const ProblemTableCell = styled.td`
+  padding: 0.75rem 0;
+  text-align: center;
+  border-bottom: 1px solid black;
 `;
 
 const fetchSolvedProblemList = async ({ queryKey }: QueryFunctionContext) => {
@@ -60,6 +66,7 @@ const fetchSolvedProblemList = async ({ queryKey }: QueryFunctionContext) => {
 const ProblemList = () => {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('id');
+  const NO_SOLVED_PROBLEMS = '푼 문제가 없습니다? 🤨';
 
   const { data: solvedProblem } = useQuery<SolvedProblem[]>(['solvedProblem', userId], fetchSolvedProblemList);
 
@@ -74,12 +81,12 @@ const ProblemList = () => {
       <ProblemListWrapper cellSpacing="0">
         <ProblemListHeader>
           <tr>
-            <ProblemAttribute>플랫폼</ProblemAttribute>
-            <ProblemAttribute>난이도</ProblemAttribute>
-            <ProblemAttribute>문제 링크</ProblemAttribute>
-            <ProblemAttribute>증빙</ProblemAttribute>
-            <ProblemAttribute>날짜</ProblemAttribute>
-            <ProblemAttribute>{null}</ProblemAttribute>
+            <ProblemTableHeader>플랫폼</ProblemTableHeader>
+            <ProblemTableHeader>난이도</ProblemTableHeader>
+            <ProblemTableHeader>문제 링크</ProblemTableHeader>
+            <ProblemTableHeader>증빙</ProblemTableHeader>
+            <ProblemTableHeader>날짜</ProblemTableHeader>
+            <ProblemTableHeader>{null}</ProblemTableHeader>
           </tr>
         </ProblemListHeader>
         <tbody>
@@ -96,7 +103,7 @@ const ProblemList = () => {
             ))
           ) : (
             <tr>
-              <td>푼 문제가 없습니다.</td>
+              <ProblemTableCell colSpan={6}>{NO_SOLVED_PROBLEMS}</ProblemTableCell>
             </tr>
           )}
         </tbody>
@@ -105,5 +112,4 @@ const ProblemList = () => {
   );
 };
 
-//
 export default ProblemList;
