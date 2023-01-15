@@ -33,13 +33,19 @@ const ProblemImageButton = styled(ProblemCommonButton)`
 `;
 
 const ProblemListItem = ({ platform, level, link, image, date }: SolvedProblem) => {
+  const testOpenProofImageModal = () => {
+    window.alert(`다음 이미지를 표시하는 Modal 이 뜹니다. ${image}`);
+  };
+
   return (
     <ProblemItemWrapper>
       <ProblemAttribute>{platform}</ProblemAttribute>
       <ProblemAttribute>{level}</ProblemAttribute>
       <ProblemAttribute>{link}</ProblemAttribute>
       <ProblemAttribute>
-        <ProblemImageButton type="button">사진 보기</ProblemImageButton>
+        <ProblemImageButton type="button" onClick={testOpenProofImageModal}>
+          사진 보기
+        </ProblemImageButton>
       </ProblemAttribute>
       <ProblemAttribute>{date}</ProblemAttribute>
       <ProblemAttribute>
