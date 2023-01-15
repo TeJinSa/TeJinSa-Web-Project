@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import SolvedProblem from '../../types/solvedProblem';
+import ProblemControlDropdown from '../ProblemControlDropdown';
 
 const ProblemItemWrapper = styled.tr`
   td:first-of-type {
@@ -42,7 +43,7 @@ const ProblemListItem = ({ platform, level, link, image, date }: SolvedProblem) 
       </ProblemAttribute>
       <ProblemAttribute>{date}</ProblemAttribute>
       <ProblemAttribute>
-        <ProblemCommonButton type="button">···</ProblemCommonButton>
+        <ProblemControlDropdown displayText="···" />
       </ProblemAttribute>
     </ProblemItemWrapper>
   );
