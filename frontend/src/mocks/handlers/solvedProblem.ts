@@ -1,6 +1,7 @@
 import { rest } from 'msw';
+import SolvedProblem from '../../types/solvedProblem';
 
-const mockSolvedProblem = [
+const mockSolvedProblem: SolvedProblem[] = [
   {
     id: '1',
     userId: 'iyu88',
@@ -74,6 +75,11 @@ const solvedProblemApi = [
       return res(ctx.status(200), ctx.json(userSolvedProblem));
     }
     return res(ctx.status(200), ctx.json(mockSolvedProblem));
+  }),
+  rest.post('/api/problems', async (req, res, ctx) => {
+    const problemDeatils = await req.json();
+    mockSolvedProblem.push(problemDeatils);
+    return res(ctx.status(200), ctx.json({ message: '성공적으로 추가되었습니다.' }));
   }),
 ];
 

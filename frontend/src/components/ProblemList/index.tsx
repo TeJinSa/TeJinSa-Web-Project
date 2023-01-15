@@ -1,4 +1,4 @@
-import { QueryFunctionContext, useQuery } from 'react-query';
+import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -63,18 +63,47 @@ const fetchSolvedProblemList = async ({ queryKey }: QueryFunctionContext) => {
   }
 };
 
+const fetchNewProblem = async (problemDetails: SolvedProblem) => {
+  const addResult = fetch('/api/problems', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(problemDetails),
+  });
+  return addResult;
+};
+
 const ProblemList = () => {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('id');
+  const queryClient = useQueryClient();
+
   const NO_SOLVED_PROBLEMS = '푼 문제가 없습니다? 🤨';
 
   const { data: solvedProblem } = useQuery<SolvedProblem[]>(['solvedProblem', userId], fetchSolvedProblemList);
+
+  const newProblemMutation = useMutation(fetchNewProblem, {
+    onSuccess: () => queryClient.invalidateQueries(['solvedProblem', userId]),
+  });
+
+  const testAddNewProblem = () => {
+    newProblemMutation.mutate({
+      userId: 'iyu88',
+      platform: '백준',
+      level: '실버',
+      date: '2023/01/15',
+      image: 'https://picsum.photos/200',
+      link: 'https://www.acmicpc.net/problem/1234',
+      id: '1',
+    });
+  };
 
   return (
     <UserCommonContainer>
       <ProblemListTitle>
         <h2>푼 문제 목록</h2>
-        <NewProblemButton>
+        <NewProblemButton type="button" onClick={testAddNewProblem}>
           <AiOutlinePlus size="20" color="white" />
         </NewProblemButton>
       </ProblemListTitle>
