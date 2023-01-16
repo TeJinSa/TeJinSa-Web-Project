@@ -3,6 +3,7 @@ import { useMutation } from 'react-query';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { problemAPI } from '../../api/problem';
 import { firebaseStorage } from '../../firebase/firebase.config';
+import Popper from '../Popper';
 
 /* TODO : 이거 분리하기, Platform도 Object로 뽑아놓기 */
 const levelList = {
@@ -52,7 +53,7 @@ interface ProblemFormProps {
 /* 고민 : Problem Form의 각각 data를 Component로 분리? (사유 : 컴포넌트 기독성) */
 const ProblemForm = ({ close }: ProblemFormProps) => {
   const [platform, setPlatform] = useState('');
-  const [viewPreviewImg, setViewPreviewImg] = useState(false);
+
   const { mutate: problemsMutate } = useMutation(problemAPI.postProblems);
   const [isUploadLoading, setIsUploadLoading] = useState(false);
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
@@ -136,30 +137,23 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
           autoComplete="off"
           name="link"
         />
-        <label
-          className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm"
-          htmlFor="screenshot"
-        >
-          {/* TODO : 비동기 라이브러리 (or Suspense) 활용하기, UI 개선하기 */}
-          {isUploadSuccess && (
-            <div>
-              <div
-                className="text-sm hover:underline"
-                onMouseEnter={() => setViewPreviewImg(true)}
-                onMouseLeave={() => setViewPreviewImg(false)}
-              >
-                미리보기
-              </div>
-              {viewPreviewImg && <img className="w-fit" src={imgUrl} alt="미리보기" />}
-            </div>
-          )}
-          {isUploadLoading && <div>로딩중</div>}
-          {isUploadError && <div>error</div>}
-          {isInitial && <div className="hover:underline">이미지업로드</div>}
 
-          {/* TODO : drag-drop 기능 추가 */}
-          <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleImgFile} />
-        </label>
+        {/* TODO : 비동기 라이브러리 (or Suspense) 활용하기, UI 개선하기 */}
+        {isUploadSuccess && (
+          <Popper trigger={<span>미리보기</span>} content={<img className="w-fit" src={imgUrl} alt="미리보기" />} />
+        )}
+        {isUploadLoading && <div>로딩중</div>}
+        {isUploadError && <div>error</div>}
+        {isInitial && (
+          <label
+            className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm hover:underline"
+            htmlFor="screenshot"
+          >
+            이미지업로드
+            {/* TODO : drag-drop 기능 추가 */}
+            <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleImgFile} />
+          </label>
+        )}
 
         <div className="m-2 flex justify-around gap-4">
           <button
