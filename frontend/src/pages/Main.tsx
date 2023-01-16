@@ -5,6 +5,10 @@ import ProblemForm from '../components/ProblemForm';
 const Main = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div>
       Main
@@ -12,8 +16,8 @@ const Main = () => {
         button
       </button>
       {showModal && (
-        <FullModal close={setShowModal}>
-          <ProblemForm />
+        <FullModal close={handleCloseModal}>
+          <ProblemForm close={handleCloseModal} />
         </FullModal>
       )}
     </div>

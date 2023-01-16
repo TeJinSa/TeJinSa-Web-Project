@@ -43,7 +43,11 @@ const LevelSelect = ({ platform }: LevelProps) => {
   );
 };
 
-const ProblemForm = () => {
+interface ProblemFormProps {
+  close: () => void;
+}
+
+const ProblemForm = ({ close }: ProblemFormProps) => {
   const [platform, setPlatform] = useState('');
   const [viewPreviewImg, setViewPreviewImg] = useState(false);
   const { mutate: problemsMutate } = useMutation(problemAPI.postProblems);
@@ -157,6 +161,7 @@ const ProblemForm = () => {
           <button
             className="h-12 w-full cursor-pointer rounded-2xl border-2 py-4 font-semibold hover:bg-gray-200"
             type="button"
+            onClick={close}
           >
             취소
           </button>
