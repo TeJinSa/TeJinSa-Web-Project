@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { usePopper } from 'react-popper';
 
 const difficultyList = {
   boj: ['골드', '실버', '브론즈2 이상'],
@@ -41,8 +42,22 @@ const DifficultySelect = ({ platform }: DifficultyProps) => {
 
 const ProblemForm = () => {
   const [platform, setPlatform] = useState('');
+  const [imgFile, setImgFile] = useState('');
+  const [viewPreviewImg, setViewPreviewImg] = useState(false);
+
   const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatform(e.currentTarget.value);
+  };
+
+  const handleImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files) {
+      const file = e.currentTarget.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') setImgFile(reader.result);
+      };
+    }
   };
 
   return (
@@ -54,6 +69,7 @@ const ProblemForm = () => {
           id="platform"
           onChange={handleDifficultyChange}
         >
+          {/* TODO : map으로 value 불러오기. 함수형 화 시키기 */}
           <option value="none">== 플랫폼 선택 ==</option>
           <option value="boj">백준</option>
           <option value="programmers">프로그래머스</option>
@@ -69,9 +85,25 @@ const ProblemForm = () => {
           placeholder="문제 링크"
           autoComplete="off"
         />
-        <label className="translate-all h-11 scale-95 rounded-xl border-[1px] p-3 shadow-sm" htmlFor="screenshot">
-          이미지 업로드
-          <input className="hidden" type="file" id="screenshot" />
+        <label
+          className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm"
+          htmlFor="screenshot"
+        >
+          {imgFile ? (
+            <div>
+              <div
+                className="text-sm hover:underline"
+                onMouseEnter={() => setViewPreviewImg(true)}
+                onMouseLeave={() => setViewPreviewImg(false)}
+              >
+                미리보기
+                {viewPreviewImg && <img className="w-fit" src={imgFile} alt="미리보기" />}
+              </div>
+            </div>
+          ) : (
+            '이미지 업로드'
+          )}
+          <input className="hidden" type="file" id="screenshot" onChange={handleImgFile} />
         </label>
 
         <div className="m-2 flex justify-around gap-4">
