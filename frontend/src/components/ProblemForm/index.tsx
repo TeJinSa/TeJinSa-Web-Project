@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { problemAPI } from '../../api/problem';
+import { firebaseStorage } from '../../firebase/firebase.config';
 
 const levelList = {
   boj: ['골드', '실버', '브론즈2 이상'],
@@ -43,9 +45,13 @@ const LevelSelect = ({ platform }: LevelProps) => {
 
 const ProblemForm = () => {
   const [platform, setPlatform] = useState('');
-  const [imgFile, setImgFile] = useState('');
   const [viewPreviewImg, setViewPreviewImg] = useState(false);
   const { mutate: problemsMutate } = useMutation(problemAPI.postProblems);
+  const [isUploadLoading, setIsUploadLoading] = useState(false);
+  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
+  const [isUploadError, setIsUpladError] = useState(false);
+  const [isInitial, setIsInitial] = useState(true);
+  const [imgUrl, setImgUrl] = useState('');
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatform(e.currentTarget.value);
@@ -54,11 +60,28 @@ const ProblemForm = () => {
   const handleImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files) {
       const file = e.currentTarget.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') setImgFile(reader.result);
-      };
+      const storageRef = ref(firebaseStorage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          setIsUploadLoading(true);
+          setIsInitial(false);
+        },
+        (error) => {
+          alert(error);
+          setIsUpladError(true);
+          setIsUploadLoading(false);
+        },
+        () => {
+          setIsUploadLoading(false);
+          setIsUploadSuccess(true);
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgUrl(downloadURL);
+            console.log(downloadURL);
+          });
+        }
+      );
     }
   };
 
@@ -72,7 +95,7 @@ const ProblemForm = () => {
         platform: values.platform,
         level: values.level,
         link: values.link,
-        screenshot: imgFile,
+        screenshot: imgUrl,
       };
       problemsMutate(problemsInput);
     }
@@ -109,7 +132,8 @@ const ProblemForm = () => {
           className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm"
           htmlFor="screenshot"
         >
-          {imgFile ? (
+          {/* TODO : 비동기 라이브러리 활용하기, UI 개선하기 */}
+          {isUploadSuccess && (
             <div>
               <div
                 className="text-sm hover:underline"
@@ -118,11 +142,13 @@ const ProblemForm = () => {
               >
                 미리보기
               </div>
-              {viewPreviewImg && <img className="w-fit" src={imgFile} alt="미리보기" />}
+              {viewPreviewImg && <img className="w-fit" src={imgUrl} alt="미리보기" />}
             </div>
-          ) : (
-            <div className="hover:underline">이미지 업로드</div>
           )}
+          {isUploadLoading && <div>로딩중</div>}
+          {isUploadError && <div>error</div>}
+          {isInitial && <div className="hover:underline">이미지업로드</div>}
+
           {/* TODO : drag-drop 기능 추가 */}
           <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleImgFile} />
         </label>
