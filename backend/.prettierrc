@@ -2,6 +2,7 @@
   "singleQuote": true,
   "parser": "typescript",
   "semi": true,
-  "useTabs": true,
-  "printWidth": 120
+  "useTabs": false,
+  "printWidth": 120,
+  "tabWidth": 2
 }
