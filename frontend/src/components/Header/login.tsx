@@ -56,11 +56,11 @@ const Login = () => {
     const getUserData = async () => {
       if (githubCode !== null) {
         mutate(
-          { code: githubCode },
+          { githubCode },
           {
             onSuccess: (d) => {
               localStorage.setItem('isLogined', 'true');
-              localStorage.setItem('id', d.userId);
+              localStorage.setItem('id', d.userData.userId);
 
               searchParams.delete('code');
               setSearchParams(searchParams);
