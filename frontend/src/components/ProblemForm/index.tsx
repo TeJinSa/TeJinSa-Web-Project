@@ -4,6 +4,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { problemAPI } from '../../api/problem';
 import { firebaseStorage } from '../../firebase/firebase.config';
 
+/* TODO : 이거 분리하기, Platform도 Object로 뽑아놓기 */
 const levelList = {
   boj: ['골드', '실버', '브론즈2 이상'],
   programmers: ['Level3', 'Level2', 'Level1'],
@@ -48,6 +49,7 @@ interface ProblemFormProps {
   close: () => void;
 }
 
+/* 고민 : Problem Form의 각각 data를 Component로 분리? (사유 : 컴포넌트 기독성) */
 const ProblemForm = ({ close }: ProblemFormProps) => {
   const [platform, setPlatform] = useState('');
   const [viewPreviewImg, setViewPreviewImg] = useState(false);
