@@ -15,6 +15,7 @@ interface LevelProps {
   platform: string;
 }
 
+/* TODO : 컴포넌트 다른파일로 분리하기 */
 const LevelSelect = ({ platform }: LevelProps) => {
   const [options, setOptions] = useState<string[]>(levelList.default);
 
@@ -69,6 +70,7 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
+          /* TODO : snapshot 활용하기 */
           setIsUploadLoading(true);
           setIsInitial(false);
         },
@@ -136,7 +138,7 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
           className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm"
           htmlFor="screenshot"
         >
-          {/* TODO : 비동기 라이브러리 활용하기, UI 개선하기 */}
+          {/* TODO : 비동기 라이브러리 (or Suspense) 활용하기, UI 개선하기 */}
           {isUploadSuccess && (
             <div>
               <div
