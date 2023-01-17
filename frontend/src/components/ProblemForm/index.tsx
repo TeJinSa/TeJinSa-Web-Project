@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
-import { problemAPI } from '../../api/problem';
+import problemAPI from '../../api/problem';
 import InputFile from './InputFile';
 import LevelSelect from './LevelSelect';
 

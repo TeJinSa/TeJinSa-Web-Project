@@ -8,10 +8,19 @@ interface PostProblemsProps {
   screenshot: string;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export const problemAPI = {
+interface PostProblemsResponse {
+  platform: '백준';
+  level: '실버';
+  image: '{문제인증firebaseURL}';
+  link: '{문제링크}';
+  id: '';
+}
+
+const problemAPI = {
   postProblems: async (input: PostProblemsProps) => {
-    const { data } = await axios.post(`${BASE_URL}/problems`, { ...input });
-    return data;
+    const response: PostProblemsResponse = await axios.post(`${BASE_URL}/problems`, { ...input });
+    return response;
   },
 };
+
+export default problemAPI;
