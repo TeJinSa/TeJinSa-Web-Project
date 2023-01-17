@@ -47,6 +47,15 @@ class ProblemModel {
       .getRawMany();
     return res;
   }
+
+  public async deleteProblem(problemId: number, userId: string) {
+    await this.problemEntity
+      .createQueryBuilder('problem')
+      .softDelete()
+      .where('id = :id', { id: problemId })
+      .andWhere('userId = :userId', { userId })
+      .execute();
+  }
 }
 
 export default ProblemModel;

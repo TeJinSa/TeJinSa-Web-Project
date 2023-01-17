@@ -40,4 +40,6 @@ router.post(
 
 router.get('/', problemsController.findAllProblem.bind(problemsController));
 
+router.delete('/:problemId', authMiddleware.isLogined, problemsController.deleteProblem.bind(problemsController));
+
 export default router;

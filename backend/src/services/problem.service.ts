@@ -54,6 +54,14 @@ class ProblemService {
       throw err;
     }
   }
+
+  public async deleteProblem(problemId: number, userId: string) {
+    try {
+      await this.problemModel.deleteProblem(problemId, userId);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export default ProblemService;

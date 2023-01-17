@@ -40,6 +40,22 @@ class ProblemController {
       next(err);
     }
   }
+
+  public async deleteProblem(req: Request, res: Response, next: NextFunction) {
+    try {
+      const problemId = Number(req.params.problemId);
+      if (Number.isNaN(problemId)) {
+        throw new BadRequestException('문제 id가 숫자가 아닙니다.');
+      }
+
+      const session: any = req.session;
+      await this.problemService.deleteProblem(problemId, session.userGithubId);
+
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default ProblemController;

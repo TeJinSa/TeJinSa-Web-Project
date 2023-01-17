@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
-import { PlatformLevel } from './platformLevel.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Unique,
+  ManyToOne,
+  CreateDateColumn,
+  JoinColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
@@ -23,4 +31,7 @@ export class Problem {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
