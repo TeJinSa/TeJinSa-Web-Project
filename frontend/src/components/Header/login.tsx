@@ -9,17 +9,18 @@ const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const githubCode = searchParams.get('code');
   const isLogined = localStorage.getItem('isLogined') === 'true';
-  const { mutate } = useMutation(postLogin);
+  const { mutate: loginMutate } = useMutation(postLogin);
+  const { mutate: logoutMutate, isSuccess: isLogoutSuccess } = useMutation(postLogout);
 
   useEffect(() => {
     const getUserData = async () => {
       if (githubCode !== null) {
-        mutate(
-          { code: githubCode },
+        loginMutate(
+          { githubCode },
           {
-            onSuccess: (d) => {
+            onSuccess: (userData) => {
               localStorage.setItem('isLogined', 'true');
-              localStorage.setItem('id', d.userId);
+              localStorage.setItem('id', userData.userId);
 
               searchParams.delete('code');
               setSearchParams(searchParams);
@@ -40,8 +41,8 @@ const Login = () => {
   };
 
   const handleLogout = async () => {
-    const data = await postLogout();
-    if (data.isSuccess) {
+    logoutMutate();
+    if (isLogoutSuccess) {
       alert('로그아웃 되었습니다.');
       localStorage.removeItem('id');
       localStorage.setItem('isLogined', 'false');
