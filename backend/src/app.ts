@@ -53,7 +53,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500);
   res.json({
     isSuccess: false,
-    code: err.status,
+    code: err.status || 500,
     message: err.message,
   });
 });
