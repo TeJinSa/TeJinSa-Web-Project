@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { SeederOptions } from 'typeorm-extension';
+import PlatformLevelSeeder from './src/seeds/platformLevel.seeder';
 
 dotenv.config();
 
-export const db = new DataSource({
+const options: DataSourceOptions & SeederOptions = {
   type: 'mysql',
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -13,4 +15,7 @@ export const db = new DataSource({
   synchronize: true,
   logging: true,
   entities: ['src/entities/*.ts'],
-});
+  seeds: [PlatformLevelSeeder],
+};
+
+export const db = new DataSource(options);

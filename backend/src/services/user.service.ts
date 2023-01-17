@@ -53,7 +53,6 @@ class UserService {
   public async createUser(userId: string) {
     try {
       const res = await this.userModel.findUser(userId);
-
       if (res === null) {
         return await this.userModel.createUser(userId);
       }
