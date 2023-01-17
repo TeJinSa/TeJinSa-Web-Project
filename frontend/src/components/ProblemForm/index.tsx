@@ -8,12 +8,9 @@ interface ProblemFormProps {
   close: () => void;
 }
 
-/* 고민 : Problem Form의 각각 data를 Component로 분리? (사유 : 컴포넌트 기독성) */
 const ProblemForm = ({ close }: ProblemFormProps) => {
   const [platform, setPlatform] = useState('');
-
   const { mutate: problemsMutate } = useMutation(problemAPI.postProblems);
-
   const [imgUrl, setImgUrl] = useState('');
 
   const updateImg = (url: string) => {

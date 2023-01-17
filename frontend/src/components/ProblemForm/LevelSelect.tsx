@@ -12,7 +12,6 @@ interface LevelProps {
   platform: string;
 }
 
-/* TODO : 컴포넌트 다른파일로 분리하기 */
 const LevelSelect = ({ platform }: LevelProps) => {
   const [options, setOptions] = useState<string[]>(levelList.default);
 

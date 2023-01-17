@@ -32,7 +32,6 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImgUrl(downloadURL);
             updateImg(downloadURL);
-            console.log(downloadURL);
           });
         }
       );
