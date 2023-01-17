@@ -26,14 +26,30 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
     const values: { platform?: string; level?: string; link?: string } = Object.fromEntries(
       new FormData(e.currentTarget)
     );
-    if (values.platform && values.level && values.link) {
+    if (values.platform && values.level && values.link && imgUrl) {
       const problemsInput = {
         platform: values.platform,
         level: values.level,
         link: values.link,
         screenshot: imgUrl,
       };
-      problemsMutate(problemsInput);
+      problemsMutate(problemsInput, {
+        onSuccess: (d) => {
+          alert('등록되었습니다.');
+          close();
+        },
+        onError: (err) => {
+          alert(`등록에 실패하였습니다. ${err}`);
+        },
+      });
+    } else if (!values.platform) {
+      alert(`플랫폼을 입력해주세요.`);
+    } else if (!values.level) {
+      alert('레벨을 입력해주세요.');
+    } else if (!values.link) {
+      alert('링크를 입력해주세요.');
+    } else if (!imgUrl) {
+      alert(`이미지를 업로드해주세요.`);
     }
   };
 
