@@ -56,6 +56,10 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
 
   const [imgUrl, setImgUrl] = useState('');
 
+  const updateImg = (url: string) => {
+    setImgUrl(url);
+  };
+
   const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatform(e.currentTarget.value);
   };
@@ -105,7 +109,7 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
           name="link"
         />
 
-        <InputFile />
+        <InputFile updateUrl={handleImgUrl} />
 
         <div className="m-2 flex justify-around gap-4">
           <button

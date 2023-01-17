@@ -3,38 +3,42 @@ import React, { useCallback, useState } from 'react';
 import { firebaseStorage } from '../../firebase/firebase.config';
 import Popper from '../Popper';
 
-const InputFile = () => {
+const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
   const [imgUrl, setImgUrl] = useState('');
   const [isUploadLoading, setIsUploadLoading] = useState(false);
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
   const [isUploadError, setIsUpladError] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
 
-  const uploadImg = useCallback((file: File) => {
-    const storageRef = ref(firebaseStorage, `files/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        /* TODO : snapshot 활용하기 */
-        setIsUploadLoading(true);
-        setIsInitial(false);
-      },
-      (error) => {
-        alert(error);
-        setIsUpladError(true);
-        setIsUploadLoading(false);
-      },
-      () => {
-        setIsUploadLoading(false);
-        setIsUploadSuccess(true);
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImgUrl(downloadURL);
-          console.log(downloadURL);
-        });
-      }
-    );
-  }, []);
+  const uploadImg = useCallback(
+    (file: File) => {
+      const storageRef = ref(firebaseStorage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          /* TODO : snapshot 활용하기 */
+          setIsUploadLoading(true);
+          setIsInitial(false);
+        },
+        (error) => {
+          alert(error);
+          setIsUpladError(true);
+          setIsUploadLoading(false);
+        },
+        () => {
+          setIsUploadLoading(false);
+          setIsUploadSuccess(true);
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgUrl(downloadURL);
+            updateImg(downloadURL);
+            console.log(downloadURL);
+          });
+        }
+      );
+    },
+    [updateImg]
+  );
 
   const handleImgDrop = useCallback(
     (e: React.DragEvent<HTMLLabelElement>) => {
