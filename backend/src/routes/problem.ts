@@ -3,10 +3,9 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import ProblemController from '../controllers/problem.controllers';
 import AuthMiddleware from '../middlewares/auth';
 import { validateBody } from '../middlewares/validateBody';
-import { StringLiteral } from 'typescript';
 
 const router = express.Router();
-const problmesController = new ProblemController();
+const problemsController = new ProblemController();
 const authMiddleware = new AuthMiddleware();
 
 class CreateProblemDTO {
@@ -36,9 +35,9 @@ router.post(
   authMiddleware.isLogined,
   authMiddleware.checkRequestUser,
   validateBody(CreateProblemDTO),
-  problmesController.createProblem.bind(problmesController)
+  problemsController.createProblem.bind(problemsController)
 );
 
-router.get('/', problmesController.findAllProblem.bind(problmesController));
+router.get('/', problemsController.findAllProblem.bind(problemsController));
 
 export default router;
