@@ -39,4 +39,6 @@ router.post(
   problmesController.createProblem.bind(problmesController)
 );
 
+router.get('/', problmesController.findAllProblem.bind(problmesController));
+
 export default router;

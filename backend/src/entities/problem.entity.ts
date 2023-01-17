@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
 import { PlatformLevel } from './platformLevel.entity';
 import { User } from './user.entity';
 
@@ -14,6 +14,7 @@ export class Problem {
   link: string;
 
   @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn({ referencedColumnName: 'userId', name: 'userId' })
   user: User;
 
   // @ManyToOne(() => PlatformLevel, (platformLevel) => platformLevel.id)

@@ -13,10 +13,39 @@ class ProblemModel {
   }
 
   public async createProblem(data: CreateProblem) {
-    console.log(data);
-    // TODO: 왜 userId는 insert가 안 돼..ㅇㅅㅇ
     const res = this.problemEntity.create(data);
     await this.problemEntity.save(res);
+  }
+
+  public async findAllProblem() {
+    const res = await this.problemEntity
+      .createQueryBuilder('problem')
+      .select('problem.id', 'id')
+      .addSelect('problem.link', 'link')
+      .addSelect('problem.image', 'image')
+      .addSelect('problem.userId', 'userId')
+      .addSelect('problem.createdAt', 'createdAt')
+      .addSelect('platformLevel.platformName', 'platformName')
+      .addSelect('platformLevel.levelName', 'levelName')
+      .leftJoin(PlatformLevel, 'platformLevel', 'platformLevel.id = problem.platformLevelId')
+      .getRawMany();
+    return res;
+  }
+
+  public async findAllUserProblem(userId: string) {
+    const res = await this.problemEntity
+      .createQueryBuilder('problem')
+      .select('problem.id', 'id')
+      .addSelect('problem.link', 'link')
+      .addSelect('problem.image', 'image')
+      .addSelect('problem.userId', 'userId')
+      .addSelect('problem.createdAt', 'createdAt')
+      .addSelect('platformLevel.platformName', 'platformName')
+      .addSelect('platformLevel.levelName', 'levelName')
+      .leftJoin(PlatformLevel, 'platformLevel', 'platformLevel.id = problem.platformLevelId')
+      .where('problem.userId = :userId', { userId })
+      .getRawMany();
+    return res;
   }
 }
 
