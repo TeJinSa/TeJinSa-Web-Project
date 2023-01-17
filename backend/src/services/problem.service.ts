@@ -3,7 +3,7 @@ import ProblemModel from '../models/problem.model';
 import UserModel from '../models/user.model';
 
 export interface CreateProblem {
-  userId: User;
+  userId: string;
   link: string;
   image: string;
   platformLevelId: number;

@@ -35,9 +35,7 @@ class UserController {
 
   public logoutUser(req: Request, res: Response, next: NextFunction) {
     try {
-      req.session.destroy((err) => {
-        throw new Error(err);
-      });
+      req.session.destroy(() => {});
 
       res.status(200).json({
         isSuccess: true,

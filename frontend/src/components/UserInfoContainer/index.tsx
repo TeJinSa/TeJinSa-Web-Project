@@ -1,7 +1,10 @@
+import axios from 'axios';
+import { useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { QueryFunctionContext, useQuery } from 'react-query';
+import { BASE_URL } from '../../utils/constants/url';
 
 const UserInfoWrapper = styled.aside`
   flex: 1;
@@ -31,10 +34,11 @@ const StatusMessageWrapper = styled.div`
   align-items: flex-start;
 `;
 
-const StatusMessage = styled.p`
+const StatusMessage = styled.input`
   width: 240px;
   margin: 0;
   border: none;
+  outline: none;
   word-break: keep-all;
 `;
 
@@ -87,15 +91,28 @@ const fetchUserProfile = async ({ queryKey }: QueryFunctionContext) => {
     throw new Error('아이디를 입력해주세요.');
   }
   try {
-    const response = await fetch(`/api/users/profile?user=${userId}`);
-    const profileJSON = await response.json();
-    return profileJSON;
+    const { data: userProfile } = await axios(`${BASE_URL}/users/profile?user=${userId}`);
+    return userProfile;
+  } catch (err) {
+    throw new Error('프로필 정보를 불러오는 데 오류가 발생했습니다.');
+  }
+};
+
+const fetchStatusMessage = async () => {
+  const id = localStorage.getItem('id');
+  if (id === null) {
+    throw new Error('로그인이 필요합니다.');
+  }
+  try {
+    const { data: userProfile } = await axios(`${BASE_URL}/users/${id}/status`);
+    return userProfile;
   } catch (err) {
     throw new Error('프로필 정보를 불러오는 데 오류가 발생했습니다.');
   }
 };
 
 const UserInfoContainer = () => {
+  const statusMessageRef = useRef();
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('id');
 
@@ -103,6 +120,7 @@ const UserInfoContainer = () => {
   const NO_MATCH_MESSAGE = '참여 좀 하렴 😮‍💨';
 
   const { data: userProfile } = useQuery<UserProfile>(['userProfile', userId], fetchUserProfile);
+  // const { mutate: statusMessageMutate } = useMutation(['userProfile', userId], fetchUserProfile);
 
   const stringifyTotalCoin = (coins: CoinStatus[]) => {
     const DUE_STATUS = ['🔴', '🟡', '🔵'];
@@ -111,11 +129,11 @@ const UserInfoContainer = () => {
 
   return (
     <UserInfoWrapper>
-      <ProfileImage src={`https://github.com/${userProfile?.userId}.png`} alt="사용자 GitHub 프로필 사진" />
+      <ProfileImage src={`https://github.com/${userId}.png`} alt="사용자 GitHub 프로필 사진" />
       <UserInfoTitle>{userProfile?.userId}</UserInfoTitle>
       <StatusMessageWrapper>
         <StatusMessage>{userProfile?.statusMessage}</StatusMessage>
-        <StatusMessageEditButton>
+        <StatusMessageEditButton onClick={fetchStatusMessage}>
           <AiOutlineEdit size="20" color="white" />
         </StatusMessageEditButton>
       </StatusMessageWrapper>

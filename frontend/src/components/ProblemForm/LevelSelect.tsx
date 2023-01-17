@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 /* TODO : 이거 분리하기, Platform도 Object로 뽑아놓기 */
 const levelList = {
-  boj: ['골드', '실버', '브론즈2 이상'],
-  programmers: ['Level3', 'Level2', 'Level1'],
-  hackerrank: ['hard', 'medium', 'easy'],
+  백준: ['골드', '실버', '브론즈2 이상'],
+  프로그래머스: ['Level3', 'Level2', 'Level1'],
+  해커랭크: ['hard', 'medium', 'easy'],
   default: ['== =='],
 };
 
@@ -17,14 +17,14 @@ const LevelSelect = ({ platform }: LevelProps) => {
 
   useEffect(() => {
     switch (platform) {
-      case 'boj':
-        setOptions(levelList.boj);
+      case '백준':
+        setOptions(levelList.백준);
         break;
-      case 'programmers':
-        setOptions(levelList.programmers);
+      case '프로그래머스':
+        setOptions(levelList.프로그래머스);
         break;
-      case 'hackerrank':
-        setOptions(levelList.hackerrank);
+      case '해커랭크':
+        setOptions(levelList.해커랭크);
         break;
       default:
         break;
