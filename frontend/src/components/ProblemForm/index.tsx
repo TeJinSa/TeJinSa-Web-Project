@@ -4,6 +4,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { problemAPI } from '../../api/problem';
 import { firebaseStorage } from '../../firebase/firebase.config';
 import Popper from '../Popper';
+import InputFile from './InputFile';
 
 /* TODO : 이거 분리하기, Platform도 Object로 뽑아놓기 */
 const levelList = {
@@ -55,43 +56,11 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
   const [platform, setPlatform] = useState('');
 
   const { mutate: problemsMutate } = useMutation(problemAPI.postProblems);
-  const [isUploadLoading, setIsUploadLoading] = useState(false);
-  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
-  const [isUploadError, setIsUpladError] = useState(false);
-  const [isInitial, setIsInitial] = useState(true);
+
   const [imgUrl, setImgUrl] = useState('');
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatform(e.currentTarget.value);
-  };
-
-  const handleImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files) {
-      const file = e.currentTarget.files[0];
-      const storageRef = ref(firebaseStorage, `files/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          /* TODO : snapshot 활용하기 */
-          setIsUploadLoading(true);
-          setIsInitial(false);
-        },
-        (error) => {
-          alert(error);
-          setIsUpladError(true);
-          setIsUploadLoading(false);
-        },
-        () => {
-          setIsUploadLoading(false);
-          setIsUploadSuccess(true);
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImgUrl(downloadURL);
-            console.log(downloadURL);
-          });
-        }
-      );
-    }
   };
 
   const handleProblemForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -138,22 +107,7 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
           name="link"
         />
 
-        {/* TODO : 비동기 라이브러리 (or Suspense) 활용하기, UI 개선하기 */}
-        {isUploadSuccess && (
-          <Popper trigger={<span>미리보기</span>} content={<img className="w-fit" src={imgUrl} alt="미리보기" />} />
-        )}
-        {isUploadLoading && <div>로딩중</div>}
-        {isUploadError && <div>error</div>}
-        {isInitial && (
-          <label
-            className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm hover:underline"
-            htmlFor="screenshot"
-          >
-            이미지업로드
-            {/* TODO : drag-drop 기능 추가 */}
-            <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleImgFile} />
-          </label>
-        )}
+        <InputFile />
 
         <div className="m-2 flex justify-around gap-4">
           <button
