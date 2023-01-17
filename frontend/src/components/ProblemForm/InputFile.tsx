@@ -1,14 +1,10 @@
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useMutation } from 'react-query';
-import { problemAPI } from '../../api/problem';
+import React, { useCallback, useState } from 'react';
 import { firebaseStorage } from '../../firebase/firebase.config';
 import Popper from '../Popper';
 
 const InputFile = () => {
-  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [imgUrl, setImgUrl] = useState('');
-  const { mutate: problemsMutate } = useMutation(problemAPI.postProblems);
   const [isUploadLoading, setIsUploadLoading] = useState(false);
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
   const [isUploadError, setIsUpladError] = useState(false);
@@ -40,7 +36,7 @@ const InputFile = () => {
     );
   }, []);
 
-  const handleLabelDrop = useCallback(
+  const handleImgDrop = useCallback(
     (e: React.DragEvent<HTMLLabelElement>) => {
       e.preventDefault();
       e.stopPropagation();
@@ -60,7 +56,7 @@ const InputFile = () => {
     [uploadImg]
   );
 
-  const handleDragandDrop = useCallback((e: React.DragEvent<HTMLInputElement | HTMLLabelElement>) => {
+  const protectBrowserDefaultFeature = useCallback((e: React.DragEvent<HTMLInputElement | HTMLLabelElement>) => {
     e.preventDefault();
     e.stopPropagation();
   }, []);
@@ -74,15 +70,15 @@ const InputFile = () => {
       {isUploadError && <div>error</div>}
       {isInitial && (
         <label
-          className="translate-all h-11 scale-95 cursor-pointer rounded-xl border-[1px] p-3 shadow-sm hover:underline"
+          className="translate-all h-11 scale-95 cursor-pointer p-3 hover:underline"
           htmlFor="screenshot"
-          onDragEnter={handleDragandDrop}
-          onDragLeave={handleDragandDrop}
-          onDragOver={handleDragandDrop}
-          onDrop={handleLabelDrop}
+          onDragEnter={protectBrowserDefaultFeature}
+          onDragLeave={protectBrowserDefaultFeature}
+          onDragOver={protectBrowserDefaultFeature}
+          onDrop={handleImgDrop}
         >
-          이미지업로드
-          {/* TODO : drag-drop 기능 추가 */}
+          이미지업로드 (이미지를 옮겨올 수 있습니다.)
+          {/* TODO : clipBoard copy and paste 기능 추가 */}
           <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleInputFileChange} />
         </label>
       )}

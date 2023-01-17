@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { problemAPI } from '../../api/problem';
-import { firebaseStorage } from '../../firebase/firebase.config';
-import Popper from '../Popper';
 import InputFile from './InputFile';
 
 /* TODO : 이거 분리하기, Platform도 Object로 뽑아놓기 */
@@ -82,6 +79,7 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
   return (
     <div className="text-center">
       <h1 className="mb-4 text-3xl">문제 등록</h1>
+      {/* TODO : 입력부분 모두 추상화 */}
       <form className="flex w-96 flex-col gap-1" onSubmit={handleProblemForm}>
         <select
           className=" translate-all h-11 scale-95 rounded-xl border-[1px] p-3 shadow-sm"
