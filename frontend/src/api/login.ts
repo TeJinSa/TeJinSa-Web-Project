@@ -11,12 +11,18 @@ interface PostLoginResponse {
   };
 }
 
+interface PostLogoutResponse {
+  isSuccess: true;
+  code: 200;
+  message: '성공';
+}
+
 export const postLogin = async ({ githubCode }: { githubCode: string }) => {
   const { userData }: PostLoginResponse = await axios.post(`${BASE_URL}/users/login`, { githubCode });
   return userData;
 };
 
 export const postLogout = async () => {
-  const { data } = await axios.post(`${BASE_URL}/users/logout`);
-  return data;
+  const response: PostLogoutResponse = await axios.post(`${BASE_URL}/users/logout`);
+  return response;
 };
