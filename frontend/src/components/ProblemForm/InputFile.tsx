@@ -9,6 +9,7 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
   const [isUploadError, setIsUpladError] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
+  const [dragover, setDragover] = useState(false);
 
   const uploadImg = useCallback(
     (file: File) => {
@@ -43,6 +44,7 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
     (e: React.DragEvent<HTMLLabelElement>) => {
       e.preventDefault();
       e.stopPropagation();
+      setDragover(false);
       const img = e.dataTransfer.files[0];
       uploadImg(img);
     },
@@ -64,8 +66,24 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
     e.stopPropagation();
   }, []);
 
+  const handleDragEnter = useCallback((e: React.DragEvent<HTMLInputElement | HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragover(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLInputElement | HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragover(false);
+  }, []);
+
   return (
-    <div className="">
+    <div
+      className={`flexCenter translate-all h-full w-full rounded-xl border-[1px] shadow-sm ${
+        dragover && 'bg-violet-200'
+      }`}
+    >
       {isUploadSuccess && (
         <Popper trigger={<span>미리보기</span>} content={<img className="w-fit" src={imgUrl} alt="미리보기" />} />
       )}
@@ -73,14 +91,15 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
       {isUploadError && <div>error</div>}
       {isInitial && (
         <label
-          className="translate-all h-11 scale-95 cursor-pointer p-3 hover:underline"
+          className="translate-all active:#fff h-full cursor-pointer p-3 hover:underline"
           htmlFor="screenshot"
-          onDragEnter={protectBrowserDefaultFeature}
-          onDragLeave={protectBrowserDefaultFeature}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
           onDragOver={protectBrowserDefaultFeature}
           onDrop={handleImgDrop}
         >
-          이미지업로드 (이미지를 옮겨올 수 있습니다.)
+          <div className="h-full w-full">이미지업로드 (이미지를 옮겨올 수 있습니다.)</div>
+
           {/* TODO : clipBoard copy and paste 기능 추가 */}
           <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleInputFileChange} />
         </label>

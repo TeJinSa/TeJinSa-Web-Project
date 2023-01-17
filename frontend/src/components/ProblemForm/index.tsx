@@ -65,8 +65,9 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
           autoComplete="off"
           name="link"
         />
-
-        <InputFile updateImg={updateImg} />
+        <div className=" h-32 scale-95 ">
+          <InputFile updateImg={updateImg} />
+        </div>
 
         <div className="m-2 flex justify-around gap-4">
           <button
