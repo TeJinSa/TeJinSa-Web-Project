@@ -20,10 +20,10 @@ const Login = () => {
         loginMutate(
           { githubCode },
           {
-            onSuccess: (userData) => {
+            onSuccess: (user) => {
               console.log('succ');
               setIsLogined(true);
-              setUserId(userData.userId);
+              setUserId(user.userId);
 
               searchParams.delete('code');
               setSearchParams(searchParams);
@@ -41,7 +41,7 @@ const Login = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`;
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     logoutMutate();
     if (isLogoutSuccess) {
       setIsLogined(false);

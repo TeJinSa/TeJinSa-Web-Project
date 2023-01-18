@@ -28,6 +28,7 @@ class ProblemModel {
       .addSelect('platformLevel.platformName', 'platformName')
       .addSelect('platformLevel.levelName', 'levelName')
       .leftJoin(PlatformLevel, 'platformLevel', 'platformLevel.id = problem.platformLevelId')
+      .orderBy({ 'problem.createdAt': 'DESC' })
       .getRawMany();
     return res;
   }
@@ -44,6 +45,7 @@ class ProblemModel {
       .addSelect('platformLevel.levelName', 'levelName')
       .leftJoin(PlatformLevel, 'platformLevel', 'platformLevel.id = problem.platformLevelId')
       .where('problem.userId = :userId', { userId })
+      .orderBy({ 'problem.createdAt': 'DESC' })
       .getRawMany();
     return res;
   }

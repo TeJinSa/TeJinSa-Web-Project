@@ -32,24 +32,24 @@ const ProblemImageButton = styled(ProblemCommonButton)`
   background-color: #745aa8;
 `;
 
-const ProblemListItem = ({ platform, level, link, image, date }: SolvedProblem) => {
+const ProblemListItem = ({ id, platformName, levelName, link, image, createdAt }: SolvedProblem) => {
   const testOpenProofImageModal = () => {
     window.alert(`다음 이미지를 표시하는 Modal 이 뜹니다. ${image}`);
   };
 
   return (
     <ProblemItemWrapper>
-      <ProblemAttribute>{platform}</ProblemAttribute>
-      <ProblemAttribute>{level}</ProblemAttribute>
+      <ProblemAttribute>{platformName}</ProblemAttribute>
+      <ProblemAttribute>{levelName}</ProblemAttribute>
       <ProblemAttribute>{link}</ProblemAttribute>
       <ProblemAttribute>
         <ProblemImageButton type="button" onClick={testOpenProofImageModal}>
           사진 보기
         </ProblemImageButton>
       </ProblemAttribute>
-      <ProblemAttribute>{date}</ProblemAttribute>
+      <ProblemAttribute>{createdAt?.slice(0, 10)}</ProblemAttribute>
       <ProblemAttribute>
-        <ProblemControlDropdown displayText="···" />
+        <ProblemControlDropdown displayText="···" id={id} />
       </ProblemAttribute>
     </ProblemItemWrapper>
   );

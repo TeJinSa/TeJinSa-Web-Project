@@ -21,6 +21,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <UserContext.Provider value={initUserState}>
+        <GlobalStyle />
         <Router />
         {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />}
       </UserContext.Provider>

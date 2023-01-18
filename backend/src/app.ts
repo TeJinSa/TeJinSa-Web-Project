@@ -7,6 +7,7 @@ import problemRouter from './routes/problem';
 import session from 'express-session';
 import { runSeeders } from 'typeorm-extension';
 import { PlatformLevel } from './entities/platformLevel.entity';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -34,6 +35,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(morgan('dev'));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 app.use(
   session({

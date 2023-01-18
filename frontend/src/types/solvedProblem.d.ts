@@ -1,9 +1,9 @@
 declare type SolvedProblem = {
-  id?: string;
+  id: string;
   userId?: string;
-  date?: string;
-  platform: string;
-  level: string;
+  createdAt?: string;
+  platformName: string;
+  levelName: string;
   link: string;
   image: string;
 };

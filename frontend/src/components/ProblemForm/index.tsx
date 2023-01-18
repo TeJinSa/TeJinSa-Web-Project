@@ -28,14 +28,16 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
     );
     if (values.platform && values.level && values.link && imgUrl) {
       const problemsInput = {
-        platform: values.platform,
-        level: values.level,
+        id: Number(localStorage.getItem('id')),
+        platformName: values.platform,
+        levelName: values.level,
         link: values.link,
-        screenshot: imgUrl,
+        image: imgUrl,
       };
       problemsMutate(problemsInput, {
         onSuccess: (d) => {
           alert('등록되었습니다.');
+          // queryClient.invalidateQueries(['solvedProblem', userId]) -> mutation 후 쿼리 날리기 위해서
           close();
         },
         onError: (err) => {
@@ -66,9 +68,9 @@ const ProblemForm = ({ close }: ProblemFormProps) => {
         >
           {/* TODO : map으로 value 불러오기. 함수형 화 시키기 */}
           <option value="none">== 플랫폼 선택 ==</option>
-          <option value="boj">백준</option>
-          <option value="programmers">프로그래머스</option>
-          <option value="hackerrank">해커랭크</option>
+          <option value="백준">백준</option>
+          <option value="프로그래머스">프로그래머스</option>
+          <option value="해커랭크">해커랭크</option>
         </select>
 
         <LevelSelect platform={platform} />
