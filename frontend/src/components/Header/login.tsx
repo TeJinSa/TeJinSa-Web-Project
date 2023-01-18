@@ -1,26 +1,29 @@
-import { useCallback, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import { useMutation } from 'react-query';
-import { useSearchParams } from 'react-router-dom';
+import { redirect, useSearchParams } from 'react-router-dom';
 import { postLogin, postLogout } from '../../api/login';
+import UserContext from '../../context/user';
 import { GITHUB_CLIENT_ID } from './constants';
 
 const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const githubCode = searchParams.get('code');
-  const isLogined = localStorage.getItem('isLogined') === 'true';
   const { mutate: loginMutate } = useMutation(postLogin);
   const { mutate: logoutMutate, isSuccess: isLogoutSuccess } = useMutation(postLogout);
+  const { isLogined, setIsLogined, userId, setUserId } = useContext(UserContext);
 
   useEffect(() => {
     const getUserData = async () => {
       if (githubCode !== null) {
+        console.log('start');
         loginMutate(
           { githubCode },
           {
             onSuccess: (userData) => {
-              localStorage.setItem('isLogined', 'true');
-              localStorage.setItem('id', userData.userId);
+              console.log('succ');
+              setIsLogined(true);
+              setUserId(userData.userId);
 
               searchParams.delete('code');
               setSearchParams(searchParams);
@@ -31,37 +34,35 @@ const Login = () => {
     };
     getUserData();
 
-    // useEffect의 누락된 속성을 알려주는 규칙인데 mount시의 useEffect사용이 막히더라구요.. 이 규칙은 뺄까요?
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleGithubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`;
-    localStorage.setItem('isLogined', 'false');
   };
 
   const handleLogout = async () => {
     logoutMutate();
     if (isLogoutSuccess) {
+      setIsLogined(false);
+      setUserId('');
       alert('로그아웃 되었습니다.');
-      localStorage.removeItem('id');
-      localStorage.setItem('isLogined', 'false');
-      window.location.href = '/';
+      redirect('/');
     }
   };
 
-  // TODO : 전역상태 도입 시 삭제
-  const getUserId = useCallback(() => {
-    return localStorage.getItem('id');
-  }, []);
+  // // TODO : 전역상태 도입 시 삭제
+  // const getUserId = useCallback(() => {
+  //   return localStorage.getItem('id');
+  // }, []);
 
   return (
     <div className="py-0 px-3">
       {isLogined ? (
         <div className="flex items-center gap-4">
-          <a href={`/user?id=${getUserId()}`} className="flex items-center gap-2">
-            <img className="w-8 rounded-full" src={`https://github.com/${getUserId()}.png`} alt="profile" />
-            <p>{getUserId()}</p>
+          <a href={`/user?id=${userId}`} className="flex items-center gap-2">
+            <img className="w-8 rounded-full" src={`https://github.com/${userId}.png`} alt="profile" />
+            <p>{userId}</p>
           </a>
           <button type="button" className="border-none bg-none hover:underline" onClick={handleLogout}>
             로그아웃
