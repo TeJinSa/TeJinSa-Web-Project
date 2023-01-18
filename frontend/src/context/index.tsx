@@ -1,20 +1,15 @@
-import { useMemo, useState } from 'react';
-import UserContext from './user';
+import { useMemo, useReducer } from 'react';
+import UserContext, { userContextReducer } from './user';
 
-const GlobalContextProvider = ({ children }: { children: JSX.Element }) => {
-  const [isLogined, setIsLogined] = useState(false);
-  const [userId, setUserId] = useState('');
+const initValue = {
+  isLogined: false,
+  userId: '',
+};
 
-  const userContextProviderValue = useMemo(
-    () => ({
-      isLogined,
-      setIsLogined,
-      userId,
-      setUserId,
-    }),
-    [isLogined, userId]
-  );
+const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [userContext, dispatchUserContext] = useReducer(userContextReducer, initValue);
+  const value = useMemo(() => ({ userState: userContext, userDispatch: dispatchUserContext }), [userContext]);
 
-  return <UserContext.Provider value={userContextProviderValue}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 export default GlobalContextProvider;

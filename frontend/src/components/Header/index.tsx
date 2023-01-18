@@ -1,6 +1,5 @@
 import Notice from './notice';
 import Login from './login';
-import UserContext from '../../context/user';
 
 const Header = () => {
   return (

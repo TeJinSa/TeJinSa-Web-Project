@@ -1,12 +1,27 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
+import { LoginObject, LogoutObject, UserContextObject, UserObject } from '../types/userInterface';
 
-interface UserContextObject {
-  isLogined: boolean;
-  setIsLogined: Dispatch<boolean>;
-  userId: string;
-  setUserId: Dispatch<string>;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const UserContext = React.createContext<UserContextObject>(null!);
+UserContext.displayName = 'UserContext';
+
+export const userContextReducer = (state: UserObject, action: LoginObject | LogoutObject) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return {
+        ...state,
+        isLogined: true,
+        userId: action.value,
+      };
+    case 'LOGOUT':
+      return {
+        ...state,
+        isLogined: false,
+        userId: '',
+      };
+    default:
+      throw new Error('잘못된 Action Type입니다.');
+  }
+};
 
 export default UserContext;
