@@ -2,15 +2,15 @@ import axios from 'axios';
 import { BASE_URL } from '../utils/constants/url';
 
 interface PostProblemsProps {
-  platform: string;
-  level: string;
+  platformName: string;
+  levelName: string;
   link: string;
-  screenshot: string;
+  image: string;
 }
 
 interface PostProblemsResponse {
-  platform: '백준';
-  level: '실버';
+  platformName: '백준';
+  levelName: '실버';
   image: '{문제인증firebaseURL}';
   link: '{문제링크}';
   id: '';
@@ -18,7 +18,11 @@ interface PostProblemsResponse {
 
 const problemAPI = {
   postProblems: async (input: PostProblemsProps) => {
-    const response: PostProblemsResponse = await axios.post(`${BASE_URL}/problems`, { ...input });
+    const response: PostProblemsResponse = await axios.post(
+      `${BASE_URL}/problems`,
+      { ...input },
+      { withCredentials: true }
+    );
     return response;
   },
 };

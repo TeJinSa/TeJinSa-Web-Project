@@ -18,9 +18,10 @@ const Login = () => {
         loginMutate(
           { githubCode },
           {
-            onSuccess: (userData) => {
+            onSuccess: (user) => {
               localStorage.setItem('isLogined', 'true');
-              localStorage.setItem('id', userData.userId);
+              localStorage.setItem('userId', user.userId);
+              localStorage.setItem('id', user.id);
 
               searchParams.delete('code');
               setSearchParams(searchParams);
@@ -36,22 +37,21 @@ const Login = () => {
   }, []);
 
   const handleGithubLogin = () => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`;
     localStorage.setItem('isLogined', 'false');
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`;
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     logoutMutate();
-    if (isLogoutSuccess) {
-      alert('로그아웃 되었습니다.');
-      localStorage.removeItem('id');
-      localStorage.setItem('isLogined', 'false');
-      window.location.href = '/';
-    }
+    alert('로그아웃 되었습니다.');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('id');
+    localStorage.setItem('isLogined', 'false');
+    window.location.href = '/';
   };
 
   const getUserId = useCallback(() => {
-    return localStorage.getItem('id');
+    return localStorage.getItem('userId');
   }, []);
 
   return (

@@ -7,6 +7,6 @@ export class User {
   id: number;
 
   @Column({ length: 20, unique: true })
-  @OneToMany(() => Problem, (problem) => problem.user)
+  // @OneToMany(() => Problem, (problem) => problem.user)
   userId: string;
 }

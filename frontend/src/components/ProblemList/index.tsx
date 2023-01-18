@@ -1,10 +1,15 @@
-import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from 'react-query';
+import axios from 'axios';
+import { useState } from 'react';
+import { QueryFunctionContext, useQuery, useQueryClient } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlinePlus } from 'react-icons/ai';
 import UserCommonContainer from '../UserCommonContainer';
 import ProblemListItem from '../ProblemListItem';
 import SolvedProblem from '../../types/solvedProblem';
+import { BASE_URL } from '../../utils/constants/url';
+import FullModal from '../FullModal';
+import ProblemForm from '../ProblemForm';
 
 const ProblemListWrapper = styled.table`
   width: 100%;
@@ -55,26 +60,15 @@ const ProblemTableCell = styled.td`
 const fetchSolvedProblemList = async ({ queryKey }: QueryFunctionContext) => {
   const userId = queryKey[1];
   try {
-    const response = await fetch(`/api/problems${userId && `?user=${userId}`}`);
-    const solvedProblemListJSON = await response.json();
-    return solvedProblemListJSON;
+    const { data: sovledProblems } = await axios(`${BASE_URL}/problems${userId && `?user=${userId}`}`);
+    return sovledProblems.data;
   } catch (err) {
     throw new Error('푼 문제 정보를 불러오는 데 오류가 발생했습니다.');
   }
 };
 
-const fetchNewProblem = async (problemDetails: SolvedProblem) => {
-  const addResult = fetch('/api/problems', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(problemDetails),
-  });
-  return addResult;
-};
-
 const ProblemList = () => {
+  const [showModal, setShowModal] = useState(false);
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('id');
   const queryClient = useQueryClient();
@@ -83,27 +77,11 @@ const ProblemList = () => {
 
   const { data: solvedProblem } = useQuery<SolvedProblem[]>(['solvedProblem', userId], fetchSolvedProblemList);
 
-  const newProblemMutation = useMutation(fetchNewProblem, {
-    onSuccess: () => queryClient.invalidateQueries(['solvedProblem', userId]),
-  });
-
-  const testAddNewProblem = () => {
-    newProblemMutation.mutate({
-      userId: 'iyu88',
-      platform: '백준',
-      level: '실버',
-      date: '2023/01/15',
-      image: 'https://picsum.photos/200',
-      link: 'https://www.acmicpc.net/problem/1234',
-      id: '1',
-    });
-  };
-
   return (
     <UserCommonContainer>
       <ProblemListTitle>
         <h2>푼 문제 목록</h2>
-        <NewProblemButton type="button" onClick={testAddNewProblem}>
+        <NewProblemButton type="button" onClick={() => setShowModal(true)}>
           <AiOutlinePlus size="20" color="white" />
         </NewProblemButton>
       </ProblemListTitle>
@@ -123,11 +101,12 @@ const ProblemList = () => {
             solvedProblem.map((p) => (
               <ProblemListItem
                 key={p.id}
-                platform={p.platform}
-                level={p.level}
+                id={p.id}
+                platformName={p.platformName}
+                levelName={p.levelName}
                 link={p.link}
                 image={p.image}
-                date={p.date}
+                createdAt={p.createdAt}
               />
             ))
           ) : (
@@ -137,6 +116,11 @@ const ProblemList = () => {
           )}
         </tbody>
       </ProblemListWrapper>
+      {showModal && (
+        <FullModal close={() => setShowModal(false)}>
+          <ProblemForm close={() => setShowModal(false)} />
+        </FullModal>
+      )}
     </UserCommonContainer>
   );
 };

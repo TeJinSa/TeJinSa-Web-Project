@@ -14,11 +14,18 @@ class ProblemController {
       if (platformLevel === null) throw new BadRequestException('플랫폼과 레벨정보가 잘못되었습니다.');
 
       const userId = await this.problemService.findUserId(id);
-      await this.problemService.createProblem({
-        ...createProblemData,
-        platformLevelId: platformLevel.id,
-        user: userId,
-      });
+      if (userId !== null) {
+        await this.problemService.createProblem({
+          ...createProblemData,
+          platformLevelId: platformLevel.id,
+          userId: userId.userId,
+        });
+      }
+      // await this.problemService.createProblem({
+      //   ...createProblemData,
+      //   platformLevelId: platformLevel.id,
+      //   userId: userId.userId
+      // });
 
       res.status(200).json({ isSuccess: true, code: 200, message: '성공' });
     } catch (err) {

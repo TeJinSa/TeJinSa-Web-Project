@@ -92,7 +92,7 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
       {isInitial && (
         <label
           className="translate-all active:#fff h-full cursor-pointer p-3 hover:underline"
-          htmlFor="screenshot"
+          htmlFor="image"
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={protectBrowserDefaultFeature}
@@ -101,7 +101,7 @@ const InputFile = ({ updateImg }: { updateImg: (url: string) => void }) => {
           <div className="h-full w-full">이미지업로드 (이미지를 옮겨올 수 있습니다.)</div>
 
           {/* TODO : clipBoard copy and paste 기능 추가 */}
-          <input className="hidden" type="file" id="screenshot" name="screenshot" onChange={handleInputFileChange} />
+          <input className="hidden" type="file" id="image" name="image" onChange={handleInputFileChange} />
         </label>
       )}
     </div>

@@ -15,15 +15,18 @@ export class Problem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 500 })
   image: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 500 })
   link: string;
 
-  @ManyToOne(() => User, (user) => user.id)
-  @JoinColumn({ referencedColumnName: 'userId', name: 'userId' })
-  user: User;
+  // @ManyToOne(() => User, (user) => user.id)
+  // @JoinColumn({ referencedColumnName: 'userId', name: 'userId' })
+  // user: User;
+
+  @Column()
+  userId: string;
 
   // @ManyToOne(() => PlatformLevel, (platformLevel) => platformLevel.id)
   @Column()
