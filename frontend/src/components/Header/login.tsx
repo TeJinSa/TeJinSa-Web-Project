@@ -50,6 +50,7 @@ const Login = () => {
     }
   };
 
+  // TODO : 전역상태 도입 시 삭제
   const getUserId = useCallback(() => {
     return localStorage.getItem('id');
   }, []);
@@ -58,10 +59,10 @@ const Login = () => {
     <div className="py-0 px-3">
       {isLogined ? (
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+          <a href={`/user?id=${getUserId()}`} className="flex items-center gap-2">
             <img className="w-8 rounded-full" src={`https://github.com/${getUserId()}.png`} alt="profile" />
             <p>{getUserId()}</p>
-          </div>
+          </a>
           <button type="button" className="border-none bg-none hover:underline" onClick={handleLogout}>
             로그아웃
           </button>
