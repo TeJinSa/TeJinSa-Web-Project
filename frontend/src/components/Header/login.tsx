@@ -3,7 +3,7 @@ import { AiFillGithub } from 'react-icons/ai';
 import { useMutation } from 'react-query';
 import { redirect, useSearchParams } from 'react-router-dom';
 import { postLogin, postLogout } from '../../api/login';
-import UserContext from '../../context/user';
+import UserContext from '../../contexts/user';
 import { GITHUB_CLIENT_ID } from './constants';
 
 const Login = () => {
