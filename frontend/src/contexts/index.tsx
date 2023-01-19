@@ -4,6 +4,7 @@ import UserContext, { userContextReducer } from './user';
 const initValue = {
   isLogined: false,
   userId: '',
+  id: -1,
 };
 
 const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {

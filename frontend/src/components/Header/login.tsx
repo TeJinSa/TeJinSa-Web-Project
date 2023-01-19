@@ -20,7 +20,7 @@ const Login = () => {
           { githubCode },
           {
             onSuccess: (user) => {
-              userDispatch({ type: 'LOGIN', value: user.userId });
+              userDispatch({ type: 'LOGIN', value: { userId: user.userId, id: user.id } });
 
               searchParams.delete('code');
               setSearchParams(searchParams);

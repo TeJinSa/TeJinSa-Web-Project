@@ -11,13 +11,15 @@ export const userContextReducer = (state: UserObject, action: LoginObject | Logo
       return {
         ...state,
         isLogined: true,
-        userId: action.value,
+        userId: action.value.userId,
+        id: action.value.id,
       };
     case 'LOGOUT':
       return {
         ...state,
         isLogined: false,
         userId: '',
+        id: -1,
       };
     default:
       throw new Error('잘못된 Action Type입니다.');

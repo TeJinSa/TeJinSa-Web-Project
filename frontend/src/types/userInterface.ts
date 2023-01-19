@@ -2,7 +2,10 @@ import React from 'react';
 
 export interface LoginObject {
   type: 'LOGIN';
-  value: string;
+  value: {
+    userId: string;
+    id: number;
+  };
 }
 
 export interface LogoutObject {
@@ -12,12 +15,14 @@ export interface LogoutObject {
 export interface UserObject {
   isLogined: boolean;
   userId: string;
+  id: number;
 }
 
 export interface UserContextObject {
   userState: {
     isLogined: boolean;
     userId: string;
+    id: number;
   };
   userDispatch: React.Dispatch<LoginObject | LogoutObject>;
 }
