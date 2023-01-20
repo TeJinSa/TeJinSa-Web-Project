@@ -4,7 +4,7 @@ const mockUserData = {
   isSuccess: true,
   code: 200,
   message: '성공',
-  userData: {
+  user: {
     id: '1',
     userId: 'tempUserId',
   },
