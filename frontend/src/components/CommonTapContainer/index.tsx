@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const TapContainer = () => {
-  const [radioSelected, setRadioSelected] = useState<'ranking' | 'problemList' | 'dayList'>();
+  const [radioSelected, setRadioSelected] = useState<'ranking' | 'problemList' | 'dayList'>('ranking');
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
