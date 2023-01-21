@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import Header from './Header';
 
 const CenteredAlignedMain = styled.main`
-  width: 1200px;
+  width: 100%;
   margin: auto;
   padding: 2rem 0;
+  max-width: 70rem;
 `;
 
 const BasicLayout = () => {

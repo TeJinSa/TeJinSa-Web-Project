@@ -2,7 +2,7 @@ import TapContainer from '../components/CommonTapContainer';
 
 const Main = () => {
   return (
-    <div>
+    <div className="m-auto">
       <TapContainer />
     </div>
   );
