@@ -14,7 +14,7 @@ const TapContainer = () => {
 
   return (
     <div className="">
-      <div className="text-[#b7b7b7 [&>*]:flex-center flex  justify-around rounded-t-2xl bg-[#565656] text-[#b7b7b7] [&>*]:w-full [&>*]:p-4">
+      <div className="[&>*]:flex-center flex justify-around rounded-t-2xl bg-[#565656] text-[#b7b7b7] [&>*]:w-full [&>*]:p-4">
         <label className={`${radioSelected === 'ranking' && 'bg-white text-black'} rounded-tl-2xl`} htmlFor="ranking">
           랭킹
           <input
@@ -49,7 +49,7 @@ const TapContainer = () => {
           />
         </label>
       </div>
-      <div className="flex-center h-full min-h-[65vh] w-full rounded-b-2xl bg-white">
+      <div className="flex-center min-h-[65vh] w-full rounded-b-2xl bg-white">
         {radioSelected === 'ranking' && <div>랭킹컴포넌트</div>}
         {radioSelected === 'problemList' && <div>푼문제컴포넌트</div>}
         {radioSelected === 'dayList' && <div>회차별컴포넌트</div>}
