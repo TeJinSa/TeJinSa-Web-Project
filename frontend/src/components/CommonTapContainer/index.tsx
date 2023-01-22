@@ -5,10 +5,14 @@ const TapContainer = () => {
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
-    if (value === 'ranking' || value === 'problemList' || value === 'dayList') {
-      setRadioSelected(value);
-    } else {
-      throw new Error('잘못된 라디오 값 입니다.');
+    switch (value) {
+      case 'ranking':
+      case 'problemList':
+      case 'dayList':
+        setRadioSelected(value);
+        break;
+      default:
+        throw new Error('잘못된 라디오 값 입니다.');
     }
   };
 
@@ -24,6 +28,7 @@ const TapContainer = () => {
             name="category"
             value="ranking"
             onChange={handleRadioChange}
+            defaultChecked
           />
         </label>
         <label className={`${radioSelected === 'problemList' && 'bg-white text-black'}`} htmlFor="problemList">
