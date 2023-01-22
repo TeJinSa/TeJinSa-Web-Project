@@ -15,6 +15,9 @@ module.exports = {
       backgroundColor: {
         overlay: 'rgba(0,0,0,0.4)',
       },
+      borderWidth: {
+        '1': '1px',
+      },
     },
   },
   plugins: [],
