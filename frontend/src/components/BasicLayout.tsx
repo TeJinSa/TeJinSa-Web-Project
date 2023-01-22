@@ -6,7 +6,7 @@ const CenteredAlignedMain = styled.main`
   width: 100%;
   margin: auto;
   padding: 2rem 0;
-  max-width: 70rem;
+  max-width: 1200px;
 `;
 
 const BasicLayout = () => {
